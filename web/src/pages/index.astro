@@ -1,8 +1,186 @@
 ---
-import Invitation from '../layouts/Invitation.astro';
-import Cover from '../components/Cover.astro';
+// 디자인 고르기: 각 디자인의 첫 화면 미리보기 목록
+// 미리보기 이미지는 src/assets/previews/<번호>.jpg (커버를 바꾸면 다시 캡처해 교체)
+import '../styles/global.css';
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { config } from '../config';
+import { dateKo } from '../lib/date';
+
+const previews = import.meta.glob<{ default: ImageMetadata }>('../assets/previews/*.jpg', { eager: true });
+const preview = (n: number) => previews[`../assets/previews/${n}.jpg`]?.default;
+
+const designs = [
+  { n: 1, name: '세이지 리본', desc: '초록 리본이 사진을 감싸는 화이트' },
+  { n: 2, name: '네이비 보우', desc: '리본으로 묶은 미니멀 카드' },
+  { n: 3, name: '겨울 동화', desc: '은빛 레터링과 내리는 눈' },
+  { n: 4, name: '매거진', desc: '화면 가득한 사진과 큰 타이포' },
+  { n: 5, name: '버건디 실링', desc: '손글씨와 하트 실링 왁스' },
+  { n: 6, name: '로즈 아치', desc: '아치형 사진과 꽃가지 장식' },
+];
+
+const { groom, bride } = config;
 ---
 
-<Invitation>
-  <Cover slot="cover" />
-</Invitation>
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>청첩장 디자인 고르기 · {groom.firstName} ♥ {bride.firstName}</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#fffcf8" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
+    />
+  </head>
+  <body>
+    <main class="page picker">
+      <header class="head">
+        <p class="eyebrow">DESIGNS</p>
+        <h1>청첩장 디자인 고르기</h1>
+        <p class="sub">
+          {groom.lastName}{groom.firstName} &amp; {bride.lastName}{bride.firstName} · {dateKo}
+        </p>
+      </header>
+
+      <ul class="grid">
+        {
+          designs.map((d, i) => {
+            const img = preview(d.n);
+            return (
+              <li>
+                <a href={`/${d.n}/`}>
+                  <span class="thumb">
+                    {img && (
+                      <Image
+                        src={img}
+                        alt=""
+                        widths={[240, 430]}
+                        sizes="(max-width: 430px) 45vw, 190px"
+                        format="webp"
+                        loading={i < 4 ? 'eager' : 'lazy'}
+                      />
+                    )}
+                    <span class="num">{d.n}</span>
+                  </span>
+                  <strong>{d.name}</strong>
+                  <span class="desc">{d.desc}</span>
+                </a>
+              </li>
+            );
+          })
+        }
+      </ul>
+    </main>
+  </body>
+</html>
+
+<style>
+  .picker {
+    padding: 64px 18px 72px;
+  }
+
+  .head {
+    text-align: center;
+    margin-bottom: 36px;
+  }
+
+  .eyebrow {
+    font-family: var(--serif);
+    font-size: 12px;
+    letter-spacing: 0.32em;
+    color: var(--rose);
+  }
+
+  h1 {
+    margin-top: 8px;
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 400;
+  }
+
+  .sub {
+    margin-top: 6px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px 14px;
+    list-style: none;
+  }
+
+  .grid a {
+    display: block;
+    text-align: center;
+  }
+
+  .thumb {
+    position: relative;
+    display: block;
+    aspect-ratio: 430 / 900;
+    overflow: hidden;
+    border-radius: 10px;
+    background: var(--tint);
+    box-shadow:
+      0 0 0 1px var(--line),
+      0 8px 20px rgba(120, 90, 80, 0.12);
+    transition: transform 0.25s;
+  }
+
+  .thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+  }
+
+  .grid a:active .thumb {
+    transform: scale(0.97);
+  }
+
+  @media (hover: hover) {
+    .grid a:hover .thumb {
+      transform: translateY(-3px);
+    }
+  }
+
+  .num {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    min-width: 24px;
+    height: 24px;
+    padding: 0 7px;
+    border-radius: 999px;
+    background: rgba(40, 32, 30, 0.72);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 24px;
+  }
+
+  strong {
+    display: block;
+    margin-top: 12px;
+    font-family: var(--serif);
+    font-size: 15.5px;
+    font-weight: 400;
+  }
+
+  .desc {
+    display: block;
+    margin-top: 2px;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+</style>
