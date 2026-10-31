@@ -1,0 +1,108 @@
+---
+import { config } from '../config';
+import { dateKo, monthGrid, timeKo, wedding } from '../lib/date';
+import SectionTitle from './SectionTitle.astro';
+
+const weeks = monthGrid();
+const names = `${config.groom.firstName} ♥ ${config.bride.firstName}`;
+---
+
+<section class="section section--tint">
+  <SectionTitle eyebrow="WEDDING DAY" title={`${wedding.month}월 ${wedding.day}일`} />
+
+  <p class="when reveal">{dateKo}<br />{timeKo}</p>
+
+  <table class="calendar reveal">
+    <thead>
+      <tr>{['일', '월', '화', '수', '목', '금', '토'].map((d) => <th>{d}</th>)}</tr>
+    </thead>
+    <tbody>
+      {
+        weeks.map((week) => (
+          <tr>
+            {week.map((d) => (
+              <td class:list={{ 'is-day': d === wedding.day }}>
+                <span>{d ?? ''}</span>
+              </td>
+            ))}
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+
+  <p class="dday reveal" data-dday data-names={names}></p>
+</section>
+
+<script>
+  import { config } from '../config';
+
+  const el = document.querySelector<HTMLElement>('[data-dday]');
+  if (el) {
+    const [y, m, d] = config.date.slice(0, 10).split('-').map(Number);
+    const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Seoul' }).format(new Date());
+    const [ty, tm, td] = today.split('-').map(Number);
+    const diff = Math.round((Date.UTC(y, m - 1, d) - Date.UTC(ty, tm - 1, td)) / 86_400_000);
+    const names = el.dataset.names;
+
+    if (diff > 0) el.innerHTML = `${names}의 결혼식이 <strong>${diff}일</strong> 남았습니다`;
+    else if (diff === 0) el.innerHTML = `오늘은 <strong>${names}</strong>의 결혼식날입니다`;
+    else el.innerHTML = `${names}의 결혼식이 <strong>${-diff}일</strong> 지났습니다`;
+  }
+</script>
+
+<style>
+  .when {
+    margin-bottom: 28px;
+    color: var(--muted);
+    font-size: 14.5px;
+  }
+
+  .calendar {
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
+    padding: 20px 0;
+    border-top: 1px solid var(--line-strong);
+    border-bottom: 1px solid var(--line-strong);
+    border-collapse: separate;
+    border-spacing: 0 4px;
+    font-size: 14px;
+  }
+
+  th {
+    padding-bottom: 8px;
+    font-weight: 500;
+    color: var(--muted);
+  }
+
+  th:first-child,
+  td:first-child {
+    color: var(--rose-deep);
+  }
+
+  td span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+  }
+
+  td.is-day span {
+    border-radius: 50%;
+    background: var(--rose);
+    color: #fff;
+    font-weight: 600;
+  }
+
+  .dday {
+    margin-top: 28px;
+    font-size: 14.5px;
+  }
+
+  .dday :global(strong) {
+    color: var(--rose-deep);
+    font-weight: 600;
+  }
+</style>

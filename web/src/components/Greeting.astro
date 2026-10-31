@@ -1,0 +1,76 @@
+---
+import { config } from '../config';
+import SectionTitle from './SectionTitle.astro';
+import Sprig from './ornaments/Sprig.astro';
+
+const { greeting, groom, bride } = config;
+
+// 빈 문자열 기준으로 문단 나누기
+const paragraphs = greeting.body
+  .reduce<string[][]>((acc, line) => (line === '' ? [...acc, []] : (acc.at(-1)!.push(line), acc)), [[]])
+  .filter((p) => p.length);
+---
+
+<section class="section">
+  <SectionTitle eyebrow="INVITATION" title={greeting.title} />
+
+  <div class="body reveal">
+    {paragraphs.map((p) => <p set:html={p.join('<br />')} />)}
+  </div>
+
+  <div class="divider reveal"><Sprig /></div>
+
+  <dl class="parents reveal">
+    <div>
+      <dt>{groom.father} · {groom.mother}<span>의 {groom.relation}</span></dt>
+      <dd>{groom.firstName}</dd>
+    </div>
+    <div>
+      <dt>{bride.father} · {bride.mother}<span>의 {bride.relation}</span></dt>
+      <dd>{bride.firstName}</dd>
+    </div>
+  </dl>
+</section>
+
+<style>
+  .body {
+    font-family: var(--serif);
+    font-size: 15.5px;
+    line-height: 2.1;
+  }
+
+  .body p + p {
+    margin-top: 1.4em;
+  }
+
+  .divider {
+    margin: 44px 0;
+  }
+
+  .parents {
+    display: grid;
+    gap: 10px;
+  }
+
+  .parents div {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    gap: 10px;
+  }
+
+  dt {
+    font-size: 15px;
+  }
+
+  dt span {
+    margin-left: 4px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  dd {
+    font-family: var(--serif);
+    font-size: 17px;
+  }
+</style>

@@ -1,0 +1,23 @@
+---
+// 섹션 구분용 작은 꽃 장식
+---
+
+<svg class="sprig" viewBox="0 0 120 28" aria-hidden="true">
+  <path d="M6 14 H 46 M 74 14 H 114" stroke="var(--line-strong)" stroke-width="1" stroke-linecap="round"></path>
+  <path d="M0 0 C 4 -6 11 -6 16 0 C 11 6 4 6 0 0 Z" fill="var(--sage)" transform="translate(32 14) rotate(-25)"></path>
+  <path d="M0 0 C 4 -6 11 -6 16 0 C 11 6 4 6 0 0 Z" fill="var(--sage)" transform="translate(88 14) rotate(205)"></path>
+  <g transform="translate(60 14)">
+    {[0, 72, 144, 216, 288].map((deg) => (
+      <ellipse cx="0" cy="-6" rx="4.2" ry="6.2" fill="var(--rose)" opacity="0.9" transform={`rotate(${deg})`} />
+    ))}
+    <circle r="2.6" fill="var(--gold)"></circle>
+  </g>
+</svg>
+
+<style>
+  .sprig {
+    display: block;
+    width: 110px;
+    margin: 0 auto;
+  }
+</style>

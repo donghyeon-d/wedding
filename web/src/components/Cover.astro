@@ -1,0 +1,216 @@
+---
+import { Image } from 'astro:assets';
+import cover from '../assets/cover.jpg';
+import { config } from '../config';
+import { dateDot, dateKo, timeKo, weekdayEn } from '../lib/date';
+import Branch from './ornaments/Branch.astro';
+
+const { groom, bride, venue } = config;
+
+// 예식 연도 12월 1일 0시(KST)부터 꽃잎 → 눈송이 (하객 기기 시간 기준으로 자동 전환)
+const snowFrom = `${config.date.slice(0, 4)}-12-01T00:00:00+09:00`;
+
+// 빌드마다 동일한 결과가 나오도록 고정 시드 사용
+const rand = (i: number, n: number) => {
+  const x = Math.sin(i * 127.1 + n * 311.7) * 43758.5453;
+  return x - Math.floor(x);
+};
+const petals = Array.from({ length: 14 }, (_, i) => ({
+  left: rand(i, 1) * 100,
+  delay: rand(i, 2) * 14,
+  duration: 10 + rand(i, 3) * 8,
+  size: 9 + rand(i, 4) * 8,
+  drift: (rand(i, 5) - 0.5) * 120,
+}));
+---
+
+<section class="cover">
+  <div class="petals" aria-hidden="true">
+    {
+      petals.map((p) => (
+        <span
+          style={`--left:${p.left.toFixed(1)}%;--delay:-${p.delay.toFixed(1)}s;--dur:${p.duration.toFixed(1)}s;--size:${p.size.toFixed(1)}px;--drift:${p.drift.toFixed(0)}px`}
+        />
+      ))
+    }
+  </div>
+  <script is:inline define:vars={{ snowFrom }}>
+    if (Date.now() >= Date.parse(snowFrom)) document.currentScript.previousElementSibling.classList.add('is-snow');
+  </script>
+
+  <p class="cover-eyebrow">We're getting married</p>
+  <p class="cover-date">{dateDot}</p>
+  <p class="cover-weekday">{weekdayEn}</p>
+
+  <div class="frame">
+    <Image
+      src={cover}
+      alt={`${groom.firstName}, ${bride.firstName} 웨딩 사진`}
+      widths={[480, 860]}
+      sizes="(max-width: 430px) 100vw, 430px"
+      format="webp"
+      loading="eager"
+      fetchpriority="high"
+      class="photo"
+    />
+    <Branch class="corner corner--tl" />
+    <Branch class="corner corner--br" />
+  </div>
+
+  <h1 class="names">
+    <span>{groom.lastName}{groom.firstName}</span>
+    <span class="and">&amp;</span>
+    <span>{bride.lastName}{bride.firstName}</span>
+  </h1>
+  <p class="info">
+    {dateKo} {timeKo}<br />
+    {venue.name} {venue.hall}
+  </p>
+</section>
+
+<style>
+  .cover {
+    position: relative;
+    padding: 72px 32px 80px;
+    text-align: center;
+    background: linear-gradient(180deg, var(--paper) 0%, var(--tint) 100%);
+  }
+
+  .cover-eyebrow {
+    margin-bottom: 14px;
+    font-family: var(--serif);
+    font-size: 13px;
+    font-style: italic;
+    letter-spacing: 0.12em;
+    color: var(--rose);
+  }
+
+  .cover-date {
+    font-family: var(--serif);
+    font-size: 26px;
+    letter-spacing: 0.08em;
+  }
+
+  .cover-weekday {
+    margin-top: 2px;
+    font-family: var(--serif);
+    font-size: 12px;
+    letter-spacing: 0.4em;
+    color: var(--rose);
+  }
+
+  .frame {
+    position: relative;
+    margin: 40px auto 44px;
+    width: 100%;
+  }
+
+  .photo {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    border-radius: 999px 999px 12px 12px; /* 아치형 프레임 */
+  }
+
+  .frame :global(.corner) {
+    position: absolute;
+    width: 62%;
+    pointer-events: none;
+    filter: drop-shadow(0 2px 3px rgba(120, 80, 70, 0.12));
+  }
+
+  .frame :global(.corner--tl) {
+    top: -24px;
+    left: -40px;
+    transform: rotate(-8deg);
+  }
+
+  .frame :global(.corner--br) {
+    right: -40px;
+    bottom: -26px;
+    transform: rotate(172deg);
+  }
+
+  .names {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    gap: 14px;
+    font-family: var(--serif);
+    font-size: 24px;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+  }
+
+  .and {
+    font-size: 18px;
+    color: var(--rose);
+  }
+
+  .info {
+    margin-top: 14px;
+    font-size: 14.5px;
+    color: var(--muted);
+  }
+
+  .petals {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .petals span {
+    position: absolute;
+    top: -20px;
+    left: var(--left);
+    width: var(--size);
+    height: calc(var(--size) * 0.8);
+    border-radius: 80% 0 80% 0;
+    background: linear-gradient(135deg, #f7d3cd, var(--rose));
+    opacity: 0.7;
+    animation: fall var(--dur) linear var(--delay) infinite;
+  }
+
+  .petals.is-snow span {
+    height: var(--size);
+    border-radius: 50%;
+    background: radial-gradient(circle, #fff 0%, #fff 45%, rgba(255, 255, 255, 0) 72%);
+    box-shadow: 0 0 4px rgba(150, 160, 185, 0.35);
+    opacity: 0.9;
+    animation-name: snow;
+  }
+
+  @keyframes snow {
+    0% {
+      transform: translate(0, 0);
+    }
+    25% {
+      transform: translate(calc(var(--drift) * 0.3), 27vh);
+    }
+    50% {
+      transform: translate(calc(var(--drift) * -0.2), 55vh);
+    }
+    75% {
+      transform: translate(calc(var(--drift) * 0.4), 82vh);
+    }
+    100% {
+      transform: translate(var(--drift), 110vh);
+      opacity: 0;
+    }
+  }
+
+  @keyframes fall {
+    0% {
+      transform: translate(0, 0) rotate(0deg);
+    }
+    50% {
+      transform: translate(calc(var(--drift) * 0.6), 50vh) rotate(200deg);
+    }
+    100% {
+      transform: translate(var(--drift), 110vh) rotate(420deg);
+      opacity: 0;
+    }
+  }
+</style>

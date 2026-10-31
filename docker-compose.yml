@@ -1,0 +1,29 @@
+services:
+  web:
+    build: ./web
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    environment:
+      DOMAIN: ${DOMAIN:?.env 파일에 DOMAIN을 설정하세요}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro,Z
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - api
+
+  api:
+    build: ./api
+    restart: unless-stopped
+    environment:
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-}
+    volumes:
+      - guestbook_data:/data
+
+volumes:
+  caddy_data:
+  caddy_config:
+  guestbook_data:

@@ -1,0 +1,234 @@
+---
+import SectionTitle from './SectionTitle.astro';
+---
+
+<section class="section section--tint">
+  <SectionTitle eyebrow="GUESTBOOK" title="축하 메시지" />
+
+  <ul class="list reveal" data-gb-list>
+    <li class="empty">메시지를 불러오는 중입니다…</li>
+  </ul>
+
+  <div class="actions reveal">
+    <button type="button" class="btn" data-gb-more hidden>더보기</button>
+    <button type="button" class="btn btn--primary" data-gb-write>축하 메시지 남기기</button>
+  </div>
+
+  <dialog class="sheet" data-gb-write-dialog>
+    <form method="dialog" data-gb-form>
+      <h3>축하 메시지 남기기</h3>
+      <input class="field" name="name" placeholder="이름" maxlength="20" required autocomplete="name" />
+      <input
+        class="field"
+        name="password"
+        type="password"
+        placeholder="비밀번호 (삭제 시 필요, 4자 이상)"
+        minlength="4"
+        maxlength="20"
+        required
+        autocomplete="new-password"
+      />
+      <textarea class="field" name="message" placeholder="축하의 마음을 전해주세요" maxlength="500" required></textarea>
+      <div class="sheet-actions">
+        <button type="button" class="btn" data-dialog-cancel>취소</button>
+        <button type="submit" class="btn btn--primary">등록</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog class="sheet" data-gb-delete-dialog>
+    <form method="dialog" data-gb-delete-form>
+      <h3>메시지 삭제</h3>
+      <input
+        class="field"
+        name="password"
+        type="password"
+        placeholder="작성 시 입력한 비밀번호"
+        required
+        autocomplete="current-password"
+      />
+      <div class="sheet-actions">
+        <button type="button" class="btn" data-dialog-cancel>취소</button>
+        <button type="submit" class="btn btn--primary">삭제</button>
+      </div>
+    </form>
+  </dialog>
+</section>
+
+<script>
+  import { toast } from '../lib/ui';
+
+  type Entry = { id: number; name: string; message: string; createdAt: string };
+
+  const PAGE = 5;
+  const list = document.querySelector<HTMLUListElement>('[data-gb-list]')!;
+  const moreBtn = document.querySelector<HTMLButtonElement>('[data-gb-more]')!;
+  const writeDialog = document.querySelector<HTMLDialogElement>('[data-gb-write-dialog]')!;
+  const writeForm = document.querySelector<HTMLFormElement>('[data-gb-form]')!;
+  const deleteDialog = document.querySelector<HTMLDialogElement>('[data-gb-delete-dialog]')!;
+  const deleteForm = document.querySelector<HTMLFormElement>('[data-gb-delete-form]')!;
+
+  let loaded = 0;
+  let deletingId: number | null = null;
+
+  const fmtDate = (iso: string) =>
+    new Intl.DateTimeFormat('ko-KR', { timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit' })
+      .format(new Date(iso))
+      .replace(/\.$/, '');
+
+  function render(entry: Entry) {
+    const li = document.createElement('li');
+    li.className = 'entry';
+    li.innerHTML = `
+      <div class="entry-head"><strong></strong><time></time>
+        <button type="button" class="entry-del" aria-label="삭제">✕</button></div>
+      <p class="entry-msg"></p>`;
+    // 사용자 입력은 textContent로만 삽입 (XSS 방지)
+    li.querySelector('strong')!.textContent = entry.name;
+    li.querySelector('time')!.textContent = fmtDate(entry.createdAt);
+    li.querySelector('.entry-msg')!.textContent = entry.message;
+    li.querySelector('.entry-del')!.addEventListener('click', () => {
+      deletingId = entry.id;
+      deleteForm.reset();
+      deleteDialog.showModal();
+    });
+    return li;
+  }
+
+  async function api(path: string, init?: RequestInit) {
+    const res = await fetch(`/api/guestbook${path}`, {
+      ...init,
+      headers: { 'Content-Type': 'application/json' },
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.error ?? '잠시 후 다시 시도해 주세요');
+    return data;
+  }
+
+  async function load(reset = false) {
+    if (reset) loaded = 0;
+    try {
+      const { items, total } = (await api(`?offset=${loaded}&limit=${PAGE}`)) as { items: Entry[]; total: number };
+      if (reset) list.innerHTML = '';
+      items.forEach((e) => list.appendChild(render(e)));
+      loaded += items.length;
+      moreBtn.hidden = loaded >= total;
+      if (total === 0) list.innerHTML = '<li class="empty">첫 번째 축하 메시지를 남겨주세요</li>';
+    } catch {
+      list.innerHTML = '<li class="empty">메시지를 불러오지 못했습니다</li>';
+    }
+  }
+
+  document.querySelector('[data-gb-write]')!.addEventListener('click', () => writeDialog.showModal());
+  document.querySelectorAll<HTMLButtonElement>('[data-dialog-cancel]').forEach((b) =>
+    b.addEventListener('click', () => b.closest('dialog')!.close()),
+  );
+  moreBtn.addEventListener('click', () => load());
+
+  writeForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const submit = writeForm.querySelector<HTMLButtonElement>('[type=submit]')!;
+    submit.disabled = true;
+    try {
+      await api('', { method: 'POST', body: JSON.stringify(Object.fromEntries(new FormData(writeForm))) });
+      writeForm.reset();
+      writeDialog.close();
+      toast('축하 메시지가 등록되었습니다');
+      await load(true);
+    } catch (err) {
+      toast((err as Error).message);
+    } finally {
+      submit.disabled = false;
+    }
+  });
+
+  deleteForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (deletingId === null) return;
+    try {
+      await api(`/${deletingId}`, { method: 'DELETE', body: JSON.stringify(Object.fromEntries(new FormData(deleteForm))) });
+      deleteDialog.close();
+      toast('삭제되었습니다');
+      await load(true);
+    } catch (err) {
+      toast((err as Error).message);
+    }
+  });
+
+  // 방명록 영역 근처에 왔을 때 처음 로드
+  const io = new IntersectionObserver(
+    (entries) => {
+      if (entries[0].isIntersecting) {
+        io.disconnect();
+        load(true);
+      }
+    },
+    { rootMargin: '600px' },
+  );
+  io.observe(list);
+</script>
+
+<style>
+  .list {
+    display: grid;
+    gap: 10px;
+    list-style: none;
+    text-align: left;
+  }
+
+  .list :global(.empty) {
+    padding: 28px 0;
+    text-align: center;
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  .list :global(.entry) {
+    padding: 16px 18px;
+    border-radius: 12px;
+    background: #fff;
+  }
+
+  .list :global(.entry-head) {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+
+  .list :global(.entry-head strong) {
+    font-size: 14.5px;
+    font-weight: 600;
+  }
+
+  .list :global(.entry-head time) {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .list :global(.entry-del) {
+    margin-left: auto;
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .list :global(.entry-msg) {
+    font-size: 14px;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  .actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: 24px;
+  }
+
+  .actions .btn--primary {
+    min-width: 200px;
+  }
+</style>

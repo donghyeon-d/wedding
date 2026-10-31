@@ -1,0 +1,60 @@
+---
+import { config } from '../config';
+---
+
+{
+  config.bgm && (
+    <>
+      <audio src={config.bgm} loop preload="none" data-bgm />
+      <button type="button" class="bgm" data-bgm-toggle aria-label="배경음악 켜기" aria-pressed="false">
+        ♪
+      </button>
+    </>
+  )
+}
+
+<script>
+  const audio = document.querySelector<HTMLAudioElement>('[data-bgm]');
+  const btn = document.querySelector<HTMLButtonElement>('[data-bgm-toggle]');
+
+  if (audio && btn) {
+    btn.addEventListener('click', async () => {
+      if (audio.paused) {
+        await audio.play().catch(() => {});
+      } else {
+        audio.pause();
+      }
+      const on = !audio.paused;
+      btn.setAttribute('aria-pressed', String(on));
+      btn.setAttribute('aria-label', on ? '배경음악 끄기' : '배경음악 켜기');
+    });
+  }
+</script>
+
+<style>
+  .bgm {
+    position: fixed;
+    top: calc(14px + env(safe-area-inset-top));
+    right: max(14px, calc(50% - 215px + 14px));
+    z-index: 50;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 252, 248, 0.85);
+    box-shadow: 0 2px 8px rgba(120, 80, 70, 0.15);
+    color: var(--muted);
+    font-size: 17px;
+    backdrop-filter: blur(4px);
+  }
+
+  .bgm[aria-pressed='true'] {
+    color: var(--rose-deep);
+    animation: spin 4s linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+</style>

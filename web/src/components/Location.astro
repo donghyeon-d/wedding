@@ -1,0 +1,175 @@
+---
+import { config } from '../config';
+import SectionTitle from './SectionTitle.astro';
+
+const { venue, transport } = config;
+const name = encodeURIComponent(venue.name);
+
+const links = [
+  { label: '네이버지도', href: venue.naverMapUrl },
+  { label: '카카오맵', href: venue.kakaoMapUrl },
+  { label: '티맵', href: `tmap://route?goalname=${name}&goalx=${venue.lng}&goaly=${venue.lat}` },
+];
+---
+
+<section class="section section--tint">
+  <SectionTitle eyebrow="LOCATION" title="오시는 길" />
+
+  <div class="place reveal">
+    <p class="venue">{venue.name} <span>{venue.hall}</span></p>
+    <p class="address">{venue.address}</p>
+    <p class="tel">
+      <a href={`tel:${venue.tel}`}>Tel. {venue.tel}</a>
+    </p>
+  </div>
+
+  <div class="map reveal" id="naver-map" data-key={config.naverMapKeyId}>
+    <p class="map-fallback">지도는 아래 버튼으로 확인해 주세요</p>
+  </div>
+
+  <div class="links reveal">
+    {
+      links.map((l) => (
+        <a class="btn btn--small" href={l.href} target="_blank" rel="noopener">
+          {l.label}
+        </a>
+      ))
+    }
+    <button type="button" class="btn btn--small" data-copy-address>주소 복사</button>
+  </div>
+
+  <dl class="transport reveal">
+    {
+      transport.map((t) => (
+        <div>
+          <dt>{t.label}</dt>
+          <dd>
+            {t.lines.map((line) => (
+              <p>{line}</p>
+            ))}
+          </dd>
+        </div>
+      ))
+    }
+  </dl>
+</section>
+
+<script>
+  import { config } from '../config';
+  import { copyText } from '../lib/ui';
+
+  document
+    .querySelector('[data-copy-address]')
+    ?.addEventListener('click', () => copyText(config.venue.address, '주소가 복사되었습니다'));
+
+  declare const naver: any;
+  const mapEl = document.getElementById('naver-map');
+  const key = mapEl?.dataset.key;
+
+  if (mapEl && key) {
+    // 지도 영역이 화면 근처에 왔을 때만 SDK 로드
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (!entries[0].isIntersecting) return;
+        io.disconnect();
+        const s = document.createElement('script');
+        s.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${encodeURIComponent(key)}`;
+        s.onload = () => {
+          const { lat, lng, name } = config.venue;
+          const position = new naver.maps.LatLng(lat, lng);
+          mapEl.innerHTML = '';
+          const map = new naver.maps.Map(mapEl, {
+            center: position,
+            zoom: 16,
+            // 페이지 스크롤을 방해하지 않도록 드래그 비활성화
+            draggable: false,
+            pinchZoom: false,
+            scrollWheel: false,
+            zoomControl: true,
+            zoomControlOptions: { position: naver.maps.Position.TOP_RIGHT, style: naver.maps.ZoomControlStyle.SMALL },
+          });
+          const marker = new naver.maps.Marker({ position, map });
+          new naver.maps.InfoWindow({
+            content: `<div style="padding:6px 10px;font-size:13px">${name}</div>`,
+            borderWidth: 0,
+            disableAnchor: false,
+          }).open(map, marker);
+        };
+        document.head.appendChild(s);
+      },
+      { rootMargin: '400px' },
+    );
+    io.observe(mapEl);
+  }
+</script>
+
+<style>
+  .venue {
+    font-family: var(--serif);
+    font-size: 18px;
+  }
+
+  .venue span {
+    font-size: 15px;
+    color: var(--muted);
+  }
+
+  .address {
+    margin-top: 4px;
+    font-size: 14px;
+  }
+
+  .tel {
+    font-size: 13.5px;
+    color: var(--muted);
+  }
+
+  .map {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 260px;
+    margin: 28px -28px 0;
+    background: var(--rose-soft);
+  }
+
+  .map-fallback {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 16px;
+  }
+
+  .transport {
+    margin-top: 40px;
+    text-align: left;
+  }
+
+  .transport div {
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    gap: 12px;
+    padding: 16px 4px;
+    border-top: 1px solid var(--line-strong);
+  }
+
+  .transport div:last-child {
+    border-bottom: 1px solid var(--line-strong);
+  }
+
+  dt {
+    font-family: var(--serif);
+    color: var(--rose-deep);
+  }
+
+  dd {
+    font-size: 14px;
+  }
+</style>

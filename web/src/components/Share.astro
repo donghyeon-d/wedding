@@ -1,0 +1,97 @@
+---
+import { config } from '../config';
+import Sprig from './ornaments/Sprig.astro';
+
+const { groom, bride, share } = config;
+---
+
+<section class="section share">
+  <div class="reveal">
+    <Sprig />
+    <p class="thanks">
+      저희의 새로운 시작을<br />
+      함께 축복해 주셔서 감사합니다
+    </p>
+  </div>
+
+  <div class="buttons reveal">
+    {
+      share.kakaoJsKey && (
+        <button type="button" class="btn kakao" data-share-kakao>
+          카카오톡으로 공유하기
+        </button>
+      )
+    }
+    <button type="button" class="btn" data-share-link>청첩장 링크 복사하기</button>
+  </div>
+
+  <p class="sign">{groom.firstName} &amp; {bride.firstName}</p>
+</section>
+
+<script>
+  import { config } from '../config';
+  import { copyText } from '../lib/ui';
+
+  declare const Kakao: any;
+  const url = config.siteUrl;
+
+  document.querySelector('[data-share-link]')?.addEventListener('click', () => copyText(url, '링크가 복사되었습니다'));
+
+  const kakaoBtn = document.querySelector('[data-share-kakao]');
+  if (kakaoBtn) {
+    const s = document.createElement('script');
+    s.src = 'https://t1.kakaocdn.net/kakao_js_sdk/2.7.4/kakao.min.js';
+    s.crossOrigin = 'anonymous';
+    s.onload = () => Kakao.isInitialized() || Kakao.init(config.share.kakaoJsKey);
+    document.head.appendChild(s);
+
+    kakaoBtn.addEventListener('click', () => {
+      if (typeof Kakao === 'undefined') return;
+      const link = { mobileWebUrl: url, webUrl: url };
+      Kakao.Share.sendDefault({
+        objectType: 'feed',
+        content: {
+          title: config.share.title,
+          description: config.share.description,
+          imageUrl: new URL('/og.jpg', url).href,
+          link,
+        },
+        buttons: [{ title: '청첩장 보기', link }],
+      });
+    });
+  }
+</script>
+
+<style>
+  .share {
+    padding-bottom: 72px;
+  }
+
+  .thanks {
+    margin-top: 24px;
+    font-family: var(--serif);
+    font-size: 15.5px;
+    line-height: 2;
+  }
+
+  .buttons {
+    display: grid;
+    gap: 8px;
+    max-width: 280px;
+    margin: 36px auto 0;
+  }
+
+  .kakao {
+    border-color: #fee500;
+    background: #fee500;
+    color: #191919;
+  }
+
+  .sign {
+    margin-top: 56px;
+    font-family: var(--serif);
+    font-size: 13px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+  }
+</style>

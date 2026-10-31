@@ -1,0 +1,16 @@
+{$DOMAIN} {
+	encode zstd gzip
+
+	# 검색엔진 노출 방지 (계좌번호·가족 이름 보호)
+	header X-Robots-Tag "noindex, nofollow"
+
+	handle /api/* {
+		reverse_proxy api:3000
+	}
+
+	handle {
+		root * /srv
+		header /_astro/* Cache-Control "public, max-age=31536000, immutable"
+		file_server
+	}
+}
