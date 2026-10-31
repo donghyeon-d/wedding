@@ -1,0 +1,28 @@
+/* 디자인 8 · 폴라로이드 */
+html[data-theme='polaroid'] {
+  --bg: #e9e4d8;
+  --paper: #faf7f0;
+  --tint: #f3eee3;
+  --ink: #3b3532;
+  --muted: #8a827a;
+  --rose: #e07a5f;
+  --rose-deep: #bf5a40;
+  --rose-soft: #f8e1d9;
+  --sage: #8fbfa8;
+  --gold: #e8bf4f;
+  --line: #ebe5d8;
+  --line-strong: #dcd3c2;
+  --hl: rgba(232, 191, 79, 0.45);
+  --hand: 'Nanum Pen Script', cursive;
+}
+
+html[data-theme='polaroid'] .section-title .eyebrow {
+  font-family: var(--hand);
+  font-size: 22px;
+  letter-spacing: 0.04em;
+}
+
+html[data-theme='polaroid'] .section-title h2 {
+  font-family: var(--hand);
+  font-size: 30px;
+}

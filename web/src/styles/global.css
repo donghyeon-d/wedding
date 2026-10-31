@@ -12,6 +12,7 @@
   --gold: #e6c17c;
   --line: #eee3dc;
   --line-strong: #dccbc2;
+  --card: #fff;
   --serif: 'Gowun Batang', 'Noto Serif KR', serif;
   --sans: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, 'Apple SD Gothic Neo',
     'Malgun Gothic', sans-serif;
@@ -93,7 +94,7 @@ textarea {
   padding: 0 20px;
   border: 1px solid var(--line-strong);
   border-radius: 999px;
-  background: #fff;
+  background: var(--card);
   font-size: 14px;
   transition: background 0.2s;
 }
@@ -164,7 +165,7 @@ textarea {
   padding: 12px 14px;
   border: 1px solid var(--line-strong);
   border-radius: 10px;
-  background: #fff;
+  background: var(--card);
   font-size: 16px; /* iOS 자동 확대 방지 */
 }
 

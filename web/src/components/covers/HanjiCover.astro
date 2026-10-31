@@ -1,0 +1,162 @@
+---
+// 디자인 10 · 한지: 한지 질감 위에 세로쓰기 제목, 붉은 낙관(이름 도장)을 찍은 모던 한국 전통 커버
+import { Image } from 'astro:assets';
+import photo from '../../assets/gallery/23.jpg';
+import { config } from '../../config';
+import { dateDot, timeKo, weekdayKo } from '../../lib/date';
+
+const { groom, bride, venue } = config;
+
+// 한지 섬유 질감 (SVG 노이즈)
+const fiber = `url("data:image/svg+xml,${encodeURIComponent(
+  `<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='f'><feTurbulence type='fractalNoise' baseFrequency='0.9 0.08' numOctaves='3' seed='7'/><feColorMatrix values='0 0 0 0 0.45  0 0 0 0 0.38  0 0 0 0 0.28  0 0 0 0.09 0'/></filter><rect width='100%' height='100%' filter='url(#f)'/></svg>`,
+)}")`;
+---
+
+<section class="cover" style={`--fiber:${fiber}`}>
+  <div class="layout">
+    <h1 class="vertical">
+      <span class="sr">{groom.lastName}{groom.firstName}, {bride.lastName}{bride.firstName} 결혼합니다</span>
+      <span aria-hidden="true">저희 결혼합니다</span>
+    </h1>
+
+    <div class="photo-col">
+      <div class="photo-wrap">
+        <Image
+          src={photo}
+          alt={`${groom.firstName}, ${bride.firstName} 웨딩 사진`}
+          widths={[480, 860]}
+          sizes="(max-width: 430px) 70vw, 300px"
+          format="webp"
+          loading="eager"
+          fetchpriority="high"
+          class="photo"
+        />
+      </div>
+
+      <div class="seal" aria-hidden="true">
+        <span>{groom.firstName}</span>
+        <span>{bride.firstName}</span>
+      </div>
+    </div>
+  </div>
+
+  <svg class="stroke" viewBox="0 0 300 16" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M4 9 C 60 4 120 12 180 7 C 230 3 270 10 296 6 L 296 10 C 260 14 220 8 180 11 C 120 15 60 8 4 12 Z" />
+  </svg>
+
+  <p class="names">
+    {groom.lastName}{groom.firstName}<span>·</span>{bride.lastName}{bride.firstName}
+  </p>
+  <p class="info">
+    {dateDot} {weekdayKo}요일 {timeKo}<br />
+    {venue.name} {venue.hall}
+  </p>
+</section>
+
+<style>
+  .cover {
+    position: relative;
+    padding: 60px 30px 80px;
+    text-align: center;
+    background-color: var(--paper);
+    background-image:
+      var(--fiber),
+      radial-gradient(120% 70% at 30% 20%, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0) 60%);
+  }
+
+  .sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+
+  .layout {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+  }
+
+  .vertical {
+    flex: none;
+    writing-mode: vertical-rl;
+    font-family: var(--brush);
+    font-size: 34px;
+    font-weight: 400;
+    letter-spacing: 0.28em;
+    line-height: 1;
+    color: var(--ink);
+    padding-top: 10px;
+  }
+
+  .photo-col {
+    position: relative;
+    flex: 1;
+  }
+
+  .photo-wrap {
+    padding: 8px;
+    border: 1px solid var(--line-strong);
+    background: rgba(255, 255, 255, 0.35);
+  }
+
+  .photo {
+    width: 100%;
+    aspect-ratio: 3 / 4.3;
+    object-fit: cover;
+    filter: sepia(0.12) saturate(0.9);
+  }
+
+  .seal {
+    position: absolute;
+    left: -30px;
+    bottom: -22px;
+    display: grid;
+    width: 66px;
+    height: 66px;
+    padding: 6px;
+    place-content: center;
+    gap: 2px;
+    background: var(--rose);
+    color: var(--paper);
+    font-family: var(--brush);
+    font-size: 17px;
+    line-height: 1.05;
+    border-radius: 6px 4px 7px 3px;
+    box-shadow: inset 0 0 0 2.5px var(--paper), inset 0 0 0 4px var(--rose);
+    transform: rotate(-5deg);
+    opacity: 0.92;
+    /* 도장 잉크가 고르지 않게 묻은 느낌 */
+    -webkit-mask-image: radial-gradient(circle at 30% 70%, #000 60%, rgba(0, 0, 0, 0.78) 100%);
+    mask-image: radial-gradient(circle at 30% 70%, #000 60%, rgba(0, 0, 0, 0.78) 100%);
+  }
+
+  .stroke {
+    display: block;
+    width: 60%;
+    height: 12px;
+    margin: 54px auto 22px;
+    fill: var(--ink);
+    opacity: 0.75;
+  }
+
+  .names {
+    font-family: var(--brush);
+    font-size: 24px;
+    letter-spacing: 0.12em;
+  }
+
+  .names span {
+    margin: 0 10px;
+    color: var(--rose);
+  }
+
+  .info {
+    margin-top: 12px;
+    font-size: 13.5px;
+    line-height: 1.9;
+    color: var(--muted);
+  }
+</style>

@@ -1,0 +1,33 @@
+/* 디자인 10 · 한지 */
+html[data-theme='hanji'] {
+  --bg: #e4dccb;
+  --paper: #f5efe3;
+  --tint: #ede5d6;
+  --ink: #2b2724;
+  --muted: #857c70;
+  --rose: #b8432f;
+  --rose-deep: #8e2f20;
+  --rose-soft: #f1ddd4;
+  --sage: #7f957f;
+  --gold: #c9a45c;
+  --line: #e3d9c8;
+  --line-strong: #cec1aa;
+  --card: #faf6ee;
+  --serif: 'Nanum Myeongjo', 'Gowun Batang', serif;
+  --brush: 'Song Myung', 'Nanum Myeongjo', serif;
+}
+
+html[data-theme='hanji'] .section-title .eyebrow {
+  font-family: var(--serif);
+  letter-spacing: 0.36em;
+}
+
+html[data-theme='hanji'] .section-title h2 {
+  font-family: var(--brush);
+  font-size: 22px;
+  letter-spacing: 0.08em;
+}
+
+html[data-theme='hanji'] .btn {
+  border-radius: 4px;
+}

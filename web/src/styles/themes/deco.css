@@ -1,0 +1,39 @@
+/* 디자인 9 · 블랙 & 골드 (다크) */
+html[data-theme='deco'] {
+  --bg: #0d0d0f;
+  --paper: #151518;
+  --tint: #1b1b1f;
+  --ink: #ece5d3;
+  --muted: #a19a8a;
+  --rose: #c8a96a;
+  --rose-deep: #9c7f45;
+  --rose-soft: #2b271f;
+  --sage: #8d8a78;
+  --gold: #c8a96a;
+  --line: #2a2a2e;
+  --line-strong: #46413a;
+  --card: #1f1f24;
+  --snow-glow: rgba(200, 169, 106, 0.4);
+  --serif: 'Nanum Myeongjo', 'Gowun Batang', serif;
+  --display: 'Cinzel', 'Nanum Myeongjo', serif;
+  color-scheme: dark;
+}
+
+html[data-theme='deco'] .page {
+  box-shadow: 0 0 60px rgba(0, 0, 0, 0.6);
+}
+
+html[data-theme='deco'] .section-title .eyebrow {
+  font-family: var(--display);
+  letter-spacing: 0.36em;
+}
+
+/* 금색 바탕 위 글자는 어둡게 */
+html[data-theme='deco'] .btn--primary,
+html[data-theme='deco'] .calendar td.is-day span {
+  color: #151518;
+}
+
+html[data-theme='deco'] .btn {
+  border-radius: 0;
+}

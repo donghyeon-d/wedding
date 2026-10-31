@@ -1,0 +1,202 @@
+---
+// 디자인 8 · 폴라로이드: 마스킹테이프로 붙인 폴라로이드 3장과 손글씨 낙서의 스크랩북 커버
+import { Image } from 'astro:assets';
+import a from '../../assets/gallery/08.jpg';
+import b from '../../assets/gallery/30.jpg';
+import c from '../../assets/gallery/18.jpg';
+import { config } from '../../config';
+import { dateKo, timeKo, wedding } from '../../lib/date';
+
+const { groom, bride, venue } = config;
+const shots = [
+  { src: a, caption: `${wedding.month}.${wedding.day} 우리 결혼해요`, cls: 'p1', tape: 'mint' },
+  { src: b, caption: `${groom.firstName} ♥ ${bride.firstName}`, cls: 'p2', tape: 'pink' },
+  { src: c, caption: '평생 함께할게요', cls: 'p3', tape: 'yellow' },
+];
+---
+
+<section class="cover">
+  <h1 class="hand">
+    <span class="sr">{groom.lastName}{groom.firstName}, {bride.lastName}{bride.firstName} 결혼합니다</span>
+    <span aria-hidden="true">우리, 결혼해요!</span>
+  </h1>
+
+  <svg class="doodle doodle--heart" viewBox="0 0 40 36" aria-hidden="true">
+    <path d="M20 33 C 4 22 0 12 7 6 C 12 2 18 5 20 10 C 22 5 28 2 33 6 C 40 12 36 22 20 33 Z" />
+  </svg>
+  <svg class="doodle doodle--star" viewBox="0 0 40 40" aria-hidden="true">
+    <path d="M20 3 L 24 15 L 37 16 L 27 24 L 30 37 L 20 30 L 10 37 L 13 24 L 3 16 L 16 15 Z" />
+  </svg>
+
+  <div class="board">
+    {
+      shots.map((s, i) => (
+        <figure class:list={['polaroid', s.cls]}>
+          <span class:list={['tape', `tape--${s.tape}`]} aria-hidden="true" />
+          <Image
+            src={s.src}
+            alt={i === 0 ? `${groom.firstName}, ${bride.firstName} 웨딩 사진` : ''}
+            widths={[360, 640]}
+            sizes="(max-width: 430px) 55vw, 240px"
+            format="webp"
+            loading="eager"
+            fetchpriority={i === 0 ? 'high' : 'auto'}
+          />
+          <figcaption>{s.caption}</figcaption>
+        </figure>
+      ))
+    }
+  </div>
+
+  <p class="names">{groom.lastName}{groom.firstName} · {bride.lastName}{bride.firstName}</p>
+  <p class="info">
+    {dateKo} {timeKo}<br />
+    {venue.name} {venue.hall}
+  </p>
+</section>
+
+<style>
+  .cover {
+    position: relative;
+    padding: 56px 20px 80px;
+    text-align: center;
+    background-color: var(--paper);
+    background-image: radial-gradient(var(--line-strong) 1px, transparent 1.2px);
+    background-size: 18px 18px;
+  }
+
+  .sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+
+  .hand {
+    font-family: var(--hand);
+    font-size: 46px;
+    font-weight: 400;
+    line-height: 1.1;
+    color: var(--ink);
+    transform: rotate(-3deg);
+  }
+
+  .hand span[aria-hidden] {
+    background: linear-gradient(transparent 62%, var(--hl) 62% 92%, transparent 92%);
+    padding: 0 6px;
+  }
+
+  .doodle {
+    position: absolute;
+    fill: none;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .doodle--heart {
+    top: 40px;
+    right: 26px;
+    width: 34px;
+    stroke: var(--rose);
+    transform: rotate(14deg);
+  }
+
+  .doodle--star {
+    top: 112px;
+    left: 22px;
+    width: 26px;
+    stroke: var(--gold);
+    transform: rotate(-12deg);
+  }
+
+  .board {
+    position: relative;
+    height: 610px;
+    margin-top: 26px;
+  }
+
+  .polaroid {
+    position: absolute;
+    width: 53%;
+    padding: 9px 9px 0;
+    background: #fff;
+    box-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.08),
+      0 10px 22px rgba(70, 50, 30, 0.16);
+  }
+
+  .polaroid img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+  }
+
+  figcaption {
+    padding: 6px 0 8px;
+    font-family: var(--hand);
+    font-size: 21px;
+    line-height: 1.2;
+    color: var(--ink);
+  }
+
+  .p1 {
+    top: 0;
+    left: 2%;
+    transform: rotate(-7deg);
+    z-index: 1;
+  }
+
+  .p2 {
+    top: 178px;
+    right: 1%;
+    transform: rotate(6deg);
+    z-index: 2;
+  }
+
+  .p3 {
+    top: 362px;
+    left: 7%;
+    width: 52%;
+    transform: rotate(-2deg);
+    z-index: 3;
+  }
+
+  .tape {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    width: 84px;
+    height: 24px;
+    transform: translateX(-50%) rotate(-4deg);
+    opacity: 0.85;
+    clip-path: polygon(3% 0, 97% 4%, 100% 50%, 96% 100%, 2% 96%, 0 50%);
+  }
+
+  .tape--mint {
+    background: repeating-linear-gradient(45deg, #bfe0cf 0 6px, #cfe9dc 6px 12px);
+  }
+
+  .tape--pink {
+    background: repeating-linear-gradient(45deg, #f3c6c0 0 6px, #f8d6d1 6px 12px);
+  }
+
+  .tape--yellow {
+    background: repeating-linear-gradient(45deg, #f4df9a 0 6px, #f8e8b5 6px 12px);
+  }
+
+  .names {
+    margin-top: 6px;
+    font-family: var(--hand);
+    font-size: 30px;
+    line-height: 1.2;
+  }
+
+  .info {
+    margin-top: 10px;
+    font-size: 13.5px;
+    line-height: 1.9;
+    color: var(--muted);
+  }
+</style>

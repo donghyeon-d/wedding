@@ -1,0 +1,242 @@
+---
+// 디자인 7 · 레코드: LP판 가운데 라벨에 사진을 넣고, 아래에 트랙리스트처럼 예식 정보를 적은 레트로 커버
+import { Image } from 'astro:assets';
+import photo from '../../assets/gallery/36.jpg';
+import { config } from '../../config';
+import { dateDot, timeKo, weekdayEn } from '../../lib/date';
+
+const { groom, bride, venue } = config;
+const tracks = [
+  { no: '01', title: 'Wedding Day', value: `${dateDot} ${weekdayEn.slice(0, 3)}` },
+  { no: '02', title: 'Ceremony', value: timeKo },
+  { no: '03', title: 'Venue', value: `${venue.name} ${venue.hall}`.trim() },
+];
+---
+
+<section class="cover">
+  <p class="side">SIDE A <span>·</span> OUR WEDDING</p>
+
+  <div class="player">
+    <div class="disc">
+      <div class="grooves" aria-hidden="true"></div>
+      <div class="sheen" aria-hidden="true"></div>
+      <div class="label">
+        <Image
+          src={photo}
+          alt={`${groom.firstName}, ${bride.firstName} 웨딩 사진`}
+          widths={[480, 860]}
+          sizes="(max-width: 430px) 60vw, 260px"
+          format="webp"
+          loading="eager"
+          fetchpriority="high"
+          class="photo"
+        />
+      </div>
+      <span class="hole" aria-hidden="true"></span>
+    </div>
+
+    <svg class="arm" viewBox="0 0 60 200" aria-hidden="true">
+      <circle cx="40" cy="18" r="14" class="arm-base" />
+      <circle cx="40" cy="18" r="5" class="arm-pin" />
+      <path d="M40 18 L 44 120 L 26 168" class="arm-rod" />
+      <rect x="14" y="160" width="20" height="30" rx="3" transform="rotate(24 24 175)" class="arm-head" />
+    </svg>
+  </div>
+
+  <h1 class="title">
+    <span>{groom.lastName}{groom.firstName}</span>
+    <em>&amp;</em>
+    <span>{bride.lastName}{bride.firstName}</span>
+  </h1>
+
+  <ol class="tracks">
+    {
+      tracks.map((t) => (
+        <li>
+          <span class="no">{t.no}</span>
+          <span class="name">{t.title}</span>
+          <span class="dots" aria-hidden="true" />
+          <span class="value">{t.value}</span>
+        </li>
+      ))
+    }
+  </ol>
+</section>
+
+<style>
+  .cover {
+    position: relative;
+    padding: 56px 28px 76px;
+    text-align: center;
+    background:
+      radial-gradient(90% 50% at 50% 38%, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0) 70%),
+      var(--paper);
+  }
+
+  .side {
+    font-family: var(--display);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.34em;
+    color: var(--rose);
+  }
+
+  .side span {
+    margin: 0 4px;
+  }
+
+  .player {
+    position: relative;
+    margin: 30px auto 40px;
+    width: 88%;
+  }
+
+  .disc {
+    position: relative;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: #18120f;
+    box-shadow:
+      0 18px 36px rgba(60, 30, 15, 0.28),
+      inset 0 0 0 2px #2c221d;
+  }
+
+  .grooves {
+    position: absolute;
+    inset: 3%;
+    border-radius: 50%;
+    background: repeating-radial-gradient(circle, #1d1613 0 1.4px, #2a201b 1.4px 2.8px);
+  }
+
+  .sheen {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: conic-gradient(
+      from 0deg,
+      transparent 0deg,
+      rgba(255, 240, 220, 0.16) 30deg,
+      transparent 70deg,
+      transparent 180deg,
+      rgba(255, 240, 220, 0.12) 210deg,
+      transparent 250deg
+    );
+    animation: spin 6s linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .label {
+    position: absolute;
+    inset: 21%;
+    overflow: hidden;
+    border-radius: 50%;
+    box-shadow: 0 0 0 5px var(--rose);
+  }
+
+  .photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 30%;
+  }
+
+  .hole {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 3.5%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--paper);
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.25);
+  }
+
+  .arm {
+    position: absolute;
+    top: -6%;
+    right: -9%;
+    width: 22%;
+    filter: drop-shadow(0 4px 4px rgba(60, 30, 15, 0.3));
+  }
+
+  .arm-base {
+    fill: var(--gold);
+  }
+
+  .arm-pin {
+    fill: var(--rose-deep);
+  }
+
+  .arm-rod {
+    fill: none;
+    stroke: #d9d2c5;
+    stroke-width: 5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .arm-head {
+    fill: var(--rose-deep);
+  }
+
+  .title {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    gap: 12px;
+    font-family: var(--serif);
+    font-size: 23px;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+  }
+
+  .title em {
+    font-family: var(--display);
+    font-size: 26px;
+    color: var(--rose);
+  }
+
+  .tracks {
+    margin: 26px auto 0;
+    max-width: 330px;
+    list-style: none;
+    border-top: 1px solid var(--line-strong);
+    text-align: left;
+  }
+
+  .tracks li {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 11px 2px;
+    border-bottom: 1px solid var(--line-strong);
+    font-size: 13.5px;
+  }
+
+  .no {
+    font-family: var(--display);
+    font-weight: 600;
+    color: var(--rose);
+  }
+
+  .name {
+    font-family: var(--display);
+    font-style: italic;
+  }
+
+  .dots {
+    flex: 1;
+    border-bottom: 1px dotted var(--line-strong);
+    transform: translateY(-4px);
+  }
+
+  .value {
+    color: var(--muted);
+  }
+</style>

@@ -1,0 +1,24 @@
+/* 디자인 7 · 레코드 */
+html[data-theme='record'] {
+  --bg: #e6dccb;
+  --paper: #f6efe2;
+  --tint: #efe5d3;
+  --ink: #2f2622;
+  --muted: #85776a;
+  --rose: #b4532f;
+  --rose-deep: #833a1e;
+  --rose-soft: #f1ddd0;
+  --sage: #9aa57d;
+  --gold: #e2b85c;
+  --line: #e7dccb;
+  --line-strong: #d3c3ac;
+  --card: #fbf7ef;
+  --serif: 'Gowun Batang', serif;
+  --display: 'Fraunces', 'Gowun Batang', serif;
+}
+
+html[data-theme='record'] .section-title .eyebrow {
+  font-family: var(--display);
+  font-weight: 600;
+  letter-spacing: 0.3em;
+}

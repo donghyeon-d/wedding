@@ -1,0 +1,200 @@
+---
+// 디자인 9 · 블랙 & 골드: 어두운 바탕에 금색 아르데코 프레임, 로마 숫자 날짜
+import { Image } from 'astro:assets';
+import photo from '../../assets/gallery/41.jpg';
+import { config } from '../../config';
+import { dateKo, timeKo, wedding } from '../../lib/date';
+
+const { groom, bride, venue } = config;
+
+const roman = (n: number) => {
+  const map: [number, string][] = [
+    [1000, 'M'], [900, 'CM'], [500, 'D'], [400, 'CD'], [100, 'C'], [90, 'XC'],
+    [50, 'L'], [40, 'XL'], [10, 'X'], [9, 'IX'], [5, 'V'], [4, 'IV'], [1, 'I'],
+  ];
+  let out = '';
+  for (const [v, s] of map) while (n >= v) (out += s), (n -= v);
+  return out;
+};
+const romanDate = [wedding.month, wedding.day, wedding.year].map(roman).join(' · ');
+
+// 프레임 위 부채꼴 햇살 선
+const rays = Array.from({ length: 13 }, (_, i) => -72 + i * 12);
+---
+
+<section class="cover">
+  <p class="top">THE WEDDING OF</p>
+
+  <div class="frame">
+    <svg class="sun" viewBox="-100 -100 200 100" aria-hidden="true">
+      {rays.map((deg) => <line x1="0" y1="-16" x2="0" y2="-92" transform={`rotate(${deg})`} />)}
+      <path d="M-14 0 A 14 14 0 0 1 14 0" />
+    </svg>
+
+    <div class="photo-wrap">
+      <Image
+        src={photo}
+        alt={`${groom.firstName}, ${bride.firstName} 웨딩 사진`}
+        widths={[480, 860]}
+        sizes="(max-width: 430px) 80vw, 340px"
+        format="webp"
+        loading="eager"
+        fetchpriority="high"
+        class="photo"
+      />
+    </div>
+    <span class="outline outline--1" aria-hidden="true"></span>
+    <span class="outline outline--2" aria-hidden="true"></span>
+    <span class="diamond diamond--top" aria-hidden="true"></span>
+    <span class="diamond diamond--bottom" aria-hidden="true"></span>
+  </div>
+
+  <h1 class="names">
+    <span>{groom.lastName}{groom.firstName}</span>
+    <span class="amp">&amp;</span>
+    <span>{bride.lastName}{bride.firstName}</span>
+  </h1>
+
+  <p class="roman">{romanDate}</p>
+  <p class="info">
+    {dateKo} {timeKo}<br />
+    {venue.name} {venue.hall}
+  </p>
+</section>
+
+<style>
+  .cover {
+    position: relative;
+    padding: 60px 40px 84px;
+    text-align: center;
+    background:
+      radial-gradient(80% 45% at 50% 40%, rgba(200, 169, 106, 0.1), rgba(200, 169, 106, 0) 70%),
+      var(--paper);
+  }
+
+  .top {
+    font-family: var(--display);
+    font-size: 12px;
+    letter-spacing: 0.42em;
+    color: var(--rose);
+  }
+
+  .frame {
+    position: relative;
+    margin: 104px auto 48px;
+    width: 86%;
+    isolation: isolate;
+  }
+
+  /* 모서리를 깎은 아르데코 팔각형 */
+  .photo-wrap,
+  .outline {
+    clip-path: polygon(12% 0, 88% 0, 100% 9%, 100% 91%, 88% 100%, 12% 100%, 0 91%, 0 9%);
+  }
+
+  .photo-wrap {
+    position: relative;
+    z-index: 1;
+  }
+
+  .photo {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    filter: grayscale(1) contrast(1.08);
+  }
+
+  /* 금색 이중 테두리: 금색 판 위에 바탕색 판을 겹쳐 선처럼 보이게 */
+  .outline {
+    position: absolute;
+    background: var(--rose);
+  }
+
+  .outline::after {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    background: var(--paper);
+    clip-path: inherit;
+  }
+
+  .outline--1 {
+    inset: -10px;
+    z-index: 0;
+  }
+
+  .outline--2 {
+    inset: -18px;
+    z-index: -1;
+    opacity: 0.55;
+  }
+
+  .sun {
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 6px);
+    width: 58%;
+    transform: translateX(-50%);
+    overflow: visible;
+  }
+
+  .sun line,
+  .sun path {
+    fill: none;
+    stroke: var(--rose);
+    stroke-width: 0.8;
+    opacity: 0.8;
+  }
+
+  .diamond {
+    position: absolute;
+    left: 50%;
+    z-index: 2;
+    width: 12px;
+    height: 12px;
+    background: var(--rose);
+    transform: translateX(-50%) rotate(45deg);
+  }
+
+  .diamond--top {
+    top: -24px;
+  }
+
+  .diamond--bottom {
+    bottom: -24px;
+  }
+
+  .names {
+    display: grid;
+    gap: 2px;
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    color: var(--ink);
+  }
+
+  .amp {
+    font-family: var(--display);
+    font-size: 18px;
+    color: var(--rose);
+  }
+
+  .roman {
+    margin-top: 22px;
+    font-family: var(--display);
+    font-size: 15px;
+    letter-spacing: 0.3em;
+    background: linear-gradient(90deg, var(--rose-deep), #f1dca6, var(--rose-deep));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .info {
+    margin-top: 8px;
+    font-size: 13px;
+    line-height: 1.9;
+    color: var(--muted);
+  }
+</style>

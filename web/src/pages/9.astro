@@ -1,0 +1,9 @@
+---
+import Invitation from '../layouts/Invitation.astro';
+import Cover from '../components/covers/DecoCover.astro';
+import '../styles/themes/deco.css';
+---
+
+<Invitation theme="deco" fonts={['Nanum+Myeongjo:wght@400;700', 'Cinzel:wght@400;500']} themeColor="#151518">
+  <Cover slot="cover" />
+</Invitation>

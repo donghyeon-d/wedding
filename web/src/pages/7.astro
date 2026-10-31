@@ -1,0 +1,9 @@
+---
+import Invitation from '../layouts/Invitation.astro';
+import Cover from '../components/covers/RecordCover.astro';
+import '../styles/themes/record.css';
+---
+
+<Invitation theme="record" fonts={['Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400']} themeColor="#f6efe2">
+  <Cover slot="cover" />
+</Invitation>
