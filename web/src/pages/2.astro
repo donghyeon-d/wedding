@@ -1,0 +1,13 @@
+---
+import Invitation from '../layouts/Invitation.astro';
+import Cover from '../components/covers/BowCover.astro';
+import '../styles/themes/bow.css';
+---
+
+<Invitation
+  theme="bow"
+  fonts={['Nanum+Myeongjo:wght@400;700', 'Cormorant+Garamond:ital,wght@1,400;1,500']}
+  themeColor="#f1f2f5"
+>
+  <Cover slot="cover" />
+</Invitation>

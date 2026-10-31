@@ -1,0 +1,33 @@
+/* 디자인 4 · 매거진 */
+html[data-theme='magazine'] {
+  --bg: #e4e2da;
+  --paper: #f8f6f0;
+  --tint: #efece3;
+  --ink: #2c2d27;
+  --muted: #7c7a70;
+  --rose: #56653d;
+  --rose-deep: #3c4829;
+  --rose-soft: #e3e7d6;
+  --sage: #93a275;
+  --gold: #e0cd8e;
+  --line: #e6e2d7;
+  --line-strong: #d2cdbd;
+  --cover-ink: #fbf8ef;
+  --cover-accent: #f5e9be;
+  --serif: 'Gowun Batang', serif;
+  --display: 'DM Serif Display', 'Gowun Batang', serif;
+}
+
+html[data-theme='magazine'] .section-title .eyebrow {
+  font-family: var(--display);
+  font-size: 13px;
+  letter-spacing: 0.28em;
+}
+
+html[data-theme='magazine'] .section-title h2 {
+  font-size: 22px;
+}
+
+html[data-theme='magazine'] .btn {
+  border-radius: 0;
+}

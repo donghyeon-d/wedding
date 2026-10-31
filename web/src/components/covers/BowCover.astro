@@ -1,0 +1,100 @@
+---
+// 디자인 2 · 네이비 보우: 이중 테두리 카드를 새틴 리본으로 묶은 미니멀 커버 (사진 없음)
+import { config } from '../../config';
+import { dateKo, timeKo } from '../../lib/date';
+
+const { groom, bride, venue } = config;
+---
+
+<section class="cover">
+  <div class="card">
+    <p class="script">With love, always</p>
+    <h1 class="names">
+      <span>{groom.lastName}{groom.firstName}</span>
+      <span>{bride.lastName}{bride.firstName}</span>
+    </h1>
+
+    <svg class="bow" viewBox="0 0 400 120" aria-hidden="true">
+      <defs>
+        <linearGradient id="satin" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" style="stop-color: var(--rose)" />
+          <stop offset="0.45" style="stop-color: var(--bow-shine)" />
+          <stop offset="1" style="stop-color: var(--rose-deep)" />
+        </linearGradient>
+      </defs>
+      <!-- 카드를 가로지르는 띠 -->
+      <path d="M0 52 C 120 58 160 54 200 56 C 240 58 290 52 400 58 L 400 64 C 290 58 240 64 200 62 C 160 60 120 64 0 58 Z" fill="url(#satin)" />
+      <!-- 늘어진 꼬리 -->
+      <path d="M196 60 C 186 78 170 96 148 116 L 158 120 C 176 102 192 84 200 64 Z" fill="url(#satin)" />
+      <path d="M204 60 C 216 80 232 96 258 112 L 250 118 C 226 102 210 86 200 64 Z" fill="url(#satin)" />
+      <!-- 고리 -->
+      <path d="M200 58 C 182 30 136 22 132 44 C 128 66 170 70 200 60 Z" fill="url(#satin)" />
+      <path d="M200 58 C 220 28 266 24 270 46 C 274 68 230 70 200 60 Z" fill="url(#satin)" />
+      <path d="M196 56 C 178 40 152 38 148 46" fill="none" stroke="var(--rose-deep)" stroke-width="1.2" opacity="0.5" />
+      <path d="M204 56 C 222 40 250 40 254 48" fill="none" stroke="var(--rose-deep)" stroke-width="1.2" opacity="0.5" />
+      <!-- 매듭 -->
+      <rect x="191" y="50" width="18" height="16" rx="6" fill="var(--rose-deep)" />
+      <rect x="194" y="52" width="6" height="12" rx="3" fill="var(--bow-shine)" opacity="0.35" />
+    </svg>
+
+    <p class="info">
+      {dateKo} {timeKo}<br />
+      {venue.name} {venue.hall}
+    </p>
+  </div>
+</section>
+
+<style>
+  .cover {
+    position: relative;
+    min-height: min(100svh, 860px);
+    padding: 28px 22px;
+    display: flex;
+    background: var(--tint);
+  }
+
+  .card {
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 18% 24px 16%;
+    text-align: center;
+    background: var(--paper);
+    border: 1px solid var(--line-strong);
+    outline: 1px solid var(--line-strong);
+    outline-offset: -9px;
+    box-shadow: 0 10px 30px rgba(40, 50, 80, 0.08);
+  }
+
+  .script {
+    font-family: var(--display);
+    font-style: italic;
+    font-size: 15px;
+    letter-spacing: 0.06em;
+    color: var(--rose);
+  }
+
+  .names {
+    display: grid;
+    gap: 4px;
+    margin-top: 18px;
+    font-family: var(--serif);
+    font-size: 24px;
+    font-weight: 400;
+    letter-spacing: 0.16em;
+  }
+
+  .bow {
+    width: calc(100% + 48px + 46px); /* 카드 밖으로 살짝 튀어나오게 */
+    margin: auto -47px;
+    filter: drop-shadow(0 3px 3px rgba(30, 40, 70, 0.18));
+  }
+
+  .info {
+    font-size: 13px;
+    line-height: 1.9;
+    color: var(--muted);
+  }
+</style>

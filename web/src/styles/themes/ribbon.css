@@ -1,0 +1,26 @@
+/* 디자인 1 · 세이지 리본 */
+html[data-theme='ribbon'] {
+  --bg: #e9ede5;
+  --paper: #fdfdfa;
+  --tint: #f3f5ef;
+  --ink: #3f483c;
+  --muted: #858c80;
+  --rose: #7f9a6f;
+  --rose-deep: #5d7650;
+  --rose-soft: #e3eadc;
+  --sage: #b4c7a6;
+  --gold: #e7d9a8;
+  --line: #e6ebe1;
+  --line-strong: #cdd7c4;
+  --serif: 'Nanum Myeongjo', 'Gowun Batang', serif;
+  --petal-from: #e4ecd9;
+  --petal-to: #a9bf9b;
+}
+
+html[data-theme='ribbon'] .page {
+  box-shadow: 0 0 48px rgba(80, 100, 70, 0.1);
+}
+
+html[data-theme='ribbon'] .section-title .eyebrow {
+  letter-spacing: 0.4em;
+}

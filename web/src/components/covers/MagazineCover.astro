@@ -1,0 +1,156 @@
+---
+// 디자인 4 · 매거진: 사진을 화면 가득 채우고 큰 세리프 타이포를 얹은 에디토리얼 커버
+import { Image } from 'astro:assets';
+import photo from '../../assets/gallery/04.jpg';
+import { config } from '../../config';
+import { dateDot, weekdayEn, wedding } from '../../lib/date';
+
+const { groom, bride, venue } = config;
+const h12 = wedding.hour % 12 || 12;
+const time = `${h12}:${String(wedding.minute).padStart(2, '0')} ${wedding.hour < 12 ? 'AM' : 'PM'}`;
+---
+
+<section class="cover">
+  <Image
+    src={photo}
+    alt={`${groom.firstName}, ${bride.firstName} 웨딩 사진`}
+    widths={[480, 860, 1200]}
+    sizes="(max-width: 430px) 100vw, 430px"
+    format="webp"
+    loading="eager"
+    fetchpriority="high"
+    class="photo"
+  />
+  <div class="shade" aria-hidden="true"></div>
+
+  <header class="top">
+    <span>{groom.lastName}{groom.firstName}</span>
+    <span class="pill">INVITATION</span>
+    <span>{bride.lastName}{bride.firstName}</span>
+  </header>
+
+  <h1 class="headline">
+    <span class="sr">{groom.lastName}{groom.firstName}, {bride.lastName}{bride.firstName} 결혼합니다</span>
+    <span aria-hidden="true">We're getting</span>
+    <em aria-hidden="true">Married</em>
+  </h1>
+
+  <footer class="bottom">
+    <p class="when">{dateDot} <i>/</i> {weekdayEn.slice(0, 3)} <i>/</i> {time}</p>
+    <p class="where">{venue.name} {venue.hall}</p>
+  </footer>
+</section>
+
+<style>
+  .cover {
+    position: relative;
+    height: min(100svh, 900px);
+    min-height: 620px;
+    color: var(--cover-ink);
+    overflow: hidden;
+  }
+
+  .photo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 60% 40%;
+    animation: zoom 14s ease-out both;
+  }
+
+  @keyframes zoom {
+    from {
+      transform: scale(1.08);
+    }
+  }
+
+  .shade {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgba(20, 24, 14, 0.5) 0%, rgba(20, 24, 14, 0) 22%),
+      linear-gradient(0deg, rgba(20, 24, 14, 0.72) 0%, rgba(20, 24, 14, 0.15) 42%, rgba(20, 24, 14, 0) 60%);
+  }
+
+  .top {
+    position: absolute;
+    top: calc(22px + env(safe-area-inset-top));
+    left: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+
+  .pill {
+    padding: 3px 16px;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+  }
+
+  .headline {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 128px;
+    display: grid;
+    text-align: center;
+    font-family: var(--display);
+    font-weight: 400;
+    line-height: 0.95;
+    color: var(--cover-accent);
+    text-shadow: 0 2px 18px rgba(0, 0, 0, 0.35);
+  }
+
+  .headline span[aria-hidden] {
+    font-size: 40px;
+  }
+
+  .headline em {
+    font-size: 64px;
+    font-style: italic;
+  }
+
+  .sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+
+  .bottom {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: calc(40px + env(safe-area-inset-bottom));
+    text-align: center;
+  }
+
+  .when {
+    font-family: var(--display);
+    font-size: 19px;
+    letter-spacing: 0.06em;
+  }
+
+  .when i {
+    margin: 0 4px;
+    font-style: normal;
+    opacity: 0.6;
+  }
+
+  .where {
+    margin-top: 4px;
+    font-size: 12.5px;
+    letter-spacing: 0.1em;
+    opacity: 0.85;
+  }
+</style>

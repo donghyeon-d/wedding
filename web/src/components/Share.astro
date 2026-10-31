@@ -33,7 +33,8 @@ const { groom, bride, share } = config;
   import { copyText } from '../lib/ui';
 
   declare const Kakao: any;
-  const url = config.siteUrl;
+  // 지금 보고 있는 디자인(/1, /2 …)의 주소를 공유
+  const url = new URL(location.pathname, config.siteUrl).href;
 
   document.querySelector('[data-share-link]')?.addEventListener('click', () => copyText(url, '링크가 복사되었습니다'));
 

@@ -1,0 +1,30 @@
+/* 디자인 2 · 네이비 보우 */
+html[data-theme='bow'] {
+  --bg: #e6e8ee;
+  --paper: #fcfcfa;
+  --tint: #f1f2f5;
+  --ink: #2e3446;
+  --muted: #7d8394;
+  --rose: #3a4670;
+  --rose-deep: #232c4e;
+  --rose-soft: #e2e5ef;
+  --sage: #a3aec6;
+  --gold: #c9b98f;
+  --line: #e5e7ec;
+  --line-strong: #cdd1dc;
+  --bow-shine: #6a77a3;
+  --serif: 'Nanum Myeongjo', 'Gowun Batang', serif;
+  --display: 'Cormorant Garamond', 'Nanum Myeongjo', serif;
+}
+
+html[data-theme='bow'] .section-title .eyebrow {
+  font-family: var(--display);
+  font-style: italic;
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  text-transform: capitalize;
+}
+
+html[data-theme='bow'] .btn {
+  border-radius: 2px;
+}

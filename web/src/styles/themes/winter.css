@@ -1,0 +1,29 @@
+/* 디자인 3 · 겨울 동화 */
+html[data-theme='winter'] {
+  --bg: #e3e8ee;
+  --paper: #f9fbfc;
+  --tint: #eef2f6;
+  --ink: #39414f;
+  --muted: #858e9c;
+  --rose: #8594ae;
+  --rose-deep: #5b6a86;
+  --rose-soft: #e2e8f0;
+  --sage: #b3c0d1;
+  --gold: #d7dde6;
+  --line: #e4e9ef;
+  --line-strong: #cbd3de;
+  --snow-glow: rgba(110, 125, 155, 0.55);
+  --serif: 'Nanum Myeongjo', 'Gowun Batang', serif;
+  --script: 'Pinyon Script', cursive;
+}
+
+html[data-theme='winter'] .section-title .eyebrow {
+  font-family: var(--script);
+  font-size: 22px;
+  letter-spacing: 0.02em;
+  text-transform: lowercase;
+}
+
+html[data-theme='winter'] .section-title .eyebrow::first-letter {
+  text-transform: uppercase;
+}

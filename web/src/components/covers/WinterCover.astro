@@ -1,0 +1,163 @@
+---
+// 디자인 3 · 겨울 동화: 은빛 손글씨 레터링 위에 타원 사진, 늘 눈이 내리는 커버
+import { Image } from 'astro:assets';
+import photo from '../../assets/gallery/44.jpg';
+import { config } from '../../config';
+import { dateKo, timeKo } from '../../lib/date';
+import Falling from '../Falling.astro';
+
+const { groom, bride, venue } = config;
+
+// 반짝임 위치 (고정)
+const sparkles = [
+  { x: 14, y: 12, s: 10, d: 0 },
+  { x: 84, y: 9, s: 7, d: 1.2 },
+  { x: 90, y: 34, s: 11, d: 2.1 },
+  { x: 8, y: 44, s: 8, d: 0.6 },
+  { x: 78, y: 58, s: 9, d: 1.7 },
+  { x: 20, y: 66, s: 6, d: 2.6 },
+  { x: 60, y: 4, s: 6, d: 3.1 },
+];
+---
+
+<section class="cover">
+  <Falling mode="snow" count={26} />
+
+  <div class="art">
+    <p class="lettering lettering--top" aria-hidden="true">First Snow</p>
+
+    <div class="oval">
+      <Image
+        src={photo}
+        alt={`${groom.firstName}, ${bride.firstName} 웨딩 사진`}
+        widths={[480, 860]}
+        sizes="(max-width: 430px) 60vw, 260px"
+        format="webp"
+        loading="eager"
+        fetchpriority="high"
+        class="photo"
+      />
+    </div>
+
+    <p class="lettering lettering--bottom" aria-hidden="true"><span class="amp">&amp;</span> Forever</p>
+
+    {
+      sparkles.map((p) => (
+        <svg
+          class="sparkle"
+          viewBox="-10 -10 20 20"
+          style={`left:${p.x}%;top:${p.y}%;width:${p.s * 1.6}px;animation-delay:-${p.d}s`}
+          aria-hidden="true"
+        >
+          <path d="M0 -10 C 1 -2 2 -1 10 0 C 2 1 1 2 0 10 C -1 2 -2 1 -10 0 C -2 -1 -1 -2 0 -10 Z" />
+        </svg>
+      ))
+    }
+  </div>
+
+  <h1 class="names">
+    <span>{groom.lastName}{groom.firstName}</span>
+    <span>{bride.lastName}{bride.firstName}</span>
+  </h1>
+  <p class="info">
+    {dateKo} {timeKo}<br />
+    {venue.name} {venue.hall}
+  </p>
+</section>
+
+<style>
+  .cover {
+    position: relative;
+    padding: 56px 24px 84px;
+    text-align: center;
+    background:
+      radial-gradient(120% 60% at 50% 0%, #ffffff 0%, rgba(255, 255, 255, 0) 70%),
+      linear-gradient(180deg, var(--tint) 0%, var(--paper) 100%);
+  }
+
+  .art {
+    position: relative;
+    padding: 20px 0 12px;
+  }
+
+  .lettering {
+    position: relative;
+    z-index: 1;
+    font-family: var(--script);
+    font-size: 64px;
+    line-height: 1;
+    color: rgba(255, 255, 255, 0.85);
+    -webkit-text-stroke: 1.1px var(--rose);
+    text-shadow: 0 2px 10px rgba(120, 135, 165, 0.25);
+    white-space: nowrap;
+  }
+
+  .lettering--top {
+    margin-bottom: -26px;
+    transform: rotate(-7deg) translateX(-14px);
+  }
+
+  .lettering--bottom {
+    margin-top: -22px;
+    transform: rotate(-7deg) translateX(22px);
+  }
+
+  .lettering .amp {
+    font-size: 48px;
+    -webkit-text-stroke-color: var(--sage);
+  }
+
+  .oval {
+    position: relative;
+    width: 58%;
+    margin: 0 auto;
+    padding: 6px;
+    border: 1px solid var(--sage);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.6);
+  }
+
+  .photo {
+    width: 100%;
+    aspect-ratio: 3 / 4.2;
+    object-fit: cover;
+    border-radius: 50%;
+    filter: grayscale(1) contrast(1.05) brightness(1.04);
+  }
+
+  .sparkle {
+    position: absolute;
+    fill: var(--rose);
+    opacity: 0.7;
+    animation: twinkle 3.6s ease-in-out infinite;
+  }
+
+  @keyframes twinkle {
+    0%,
+    100% {
+      opacity: 0.15;
+      transform: scale(0.6) rotate(0deg);
+    }
+    50% {
+      opacity: 0.9;
+      transform: scale(1) rotate(45deg);
+    }
+  }
+
+  .names {
+    display: grid;
+    gap: 2px;
+    margin-top: 44px;
+    font-family: var(--serif);
+    font-size: 21px;
+    font-weight: 400;
+    letter-spacing: 0.16em;
+  }
+
+  .info {
+    margin-top: 20px;
+    font-size: 13.5px;
+    line-height: 1.9;
+    color: var(--muted);
+  }
+</style>

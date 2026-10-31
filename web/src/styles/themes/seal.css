@@ -1,0 +1,31 @@
+/* 디자인 5 · 버건디 실링 */
+html[data-theme='seal'] {
+  --bg: #ece3df;
+  --paper: #fffaf6;
+  --tint: #f8efea;
+  --ink: #3d2a2c;
+  --muted: #8d7a7b;
+  --rose: #8c2232;
+  --rose-deep: #64121f;
+  --rose-soft: #f3e0e0;
+  --sage: #c48f95;
+  --gold: #d4af6a;
+  --line: #efe2dd;
+  --line-strong: #dcc5c0;
+  --seal-light: #c2455a;
+  --petal-from: #f0c4c8;
+  --petal-to: #a8364a;
+  --serif: 'Gowun Batang', serif;
+  --script: 'Parisienne', cursive;
+}
+
+html[data-theme='seal'] .section-title .eyebrow {
+  font-family: var(--script);
+  font-size: 24px;
+  letter-spacing: 0;
+  text-transform: lowercase;
+}
+
+html[data-theme='seal'] .section-title .eyebrow::first-letter {
+  text-transform: uppercase;
+}
