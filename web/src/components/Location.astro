@@ -2,18 +2,15 @@
 import { Image } from "astro:assets";
 import { config } from "../config";
 import boothSample from "../assets/photobooth.jpg";
+import parkingMap from "../assets/parking-map.jpg";
 import SectionTitle from "./SectionTitle.astro";
 
-const { venue, transport } = config;
+const { venue, transport, parking } = config;
 const name = encodeURIComponent(venue.name);
 
 const links = [
   { label: "네이버지도", href: venue.naverMapUrl },
   { label: "카카오맵", href: venue.kakaoMapUrl },
-  {
-    label: "티맵",
-    href: `tmap://route?goalname=${name}&goalx=${venue.lng}&goaly=${venue.lat}`,
-  },
 ];
 ---
 
@@ -59,6 +56,36 @@ const links = [
       ))
     }
   </dl>
+
+  <div class="parking reveal">
+    <p class="parking-title">주차 안내</p>
+    <a class="parking-map" href={parkingMap.src} target="_blank" rel="noopener" aria-label="약도 크게 보기">
+      <Image
+        src={parkingMap}
+        alt="더 베니르 주변 약도: 중앙역 2번 출구, 주차장 ①~⑤ 위치, 셔틀버스 승차장"
+        widths={[430, 860, 1264]}
+        sizes="(max-width: 430px) 90vw, 380px"
+        format="webp"
+      />
+      <span>탭하면 크게 볼 수 있어요</span>
+    </a>
+    <ul class="lots">
+      {
+        parking.lots.map((l) => (
+          <li>
+            <b>{l.no}</b>
+            <div>
+              <p>{l.name}</p>
+              {l.addr && <p class="addr">{l.addr}</p>}
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+    <ul class="notes">
+      {parking.notes.map((n) => <li>{n}</li>)}
+    </ul>
+  </div>
 
   {
     config.photoBooth.length > 0 && (
@@ -140,6 +167,81 @@ const links = [
 </script>
 
 <style>
+  .parking {
+    margin-top: 28px;
+    text-align: left;
+  }
+
+  .parking-title {
+    margin-bottom: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--rose-deep);
+  }
+
+  .parking-map {
+    display: block;
+    overflow: hidden;
+    border: 1px solid var(--line-strong);
+    border-radius: 10px;
+    background: #fff;
+  }
+
+  .parking-map span {
+    display: block;
+    padding: 6px 0 8px;
+    font-size: 11.5px;
+    text-align: center;
+    color: var(--muted);
+  }
+
+  .lots {
+    display: grid;
+    gap: 10px;
+    margin-top: 16px;
+    list-style: none;
+    font-size: 14px;
+  }
+
+  .lots li {
+    display: flex;
+    gap: 10px;
+  }
+
+  .lots b {
+    flex: none;
+    min-width: 26px;
+    font-weight: 500;
+    color: var(--rose);
+  }
+
+  .lots .addr {
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+
+  .notes {
+    margin-top: 16px;
+    padding: 14px 16px;
+    border-radius: 10px;
+    background: var(--card);
+    list-style: none;
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--muted);
+  }
+
+  .notes li {
+    position: relative;
+    padding-left: 10px;
+  }
+
+  .notes li::before {
+    content: '·';
+    position: absolute;
+    left: 0;
+  }
+
   .booth {
     display: flex;
     align-items: center;
