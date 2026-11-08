@@ -3,3 +3,5 @@ api/data
 .DS_Store
 # 원본 사진 (변환본은 web/src/assets/에 있음)
 photo/
+CLAUDE.md
+photo_v2/

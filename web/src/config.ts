@@ -11,15 +11,15 @@ export const config = {
   groom: {
     lastName: '최',
     firstName: '동환',
-    father: '김철수',
-    mother: '박영희',
+    father: '최영락',
+    mother: '김재희',
     relation: '아들',
   },
   bride: {
     lastName: '김',
     firstName: '해리',
-    father: '이영호',
-    mother: '최미경',
+    father: '김창곤',
+    mother: '김현옥',
     relation: '딸',
   },
 
@@ -58,16 +58,19 @@ export const config = {
 
   accounts: {
     groom: [
-      { role: '신랑', name: '최동환', bank: '○○은행', number: '000-0000-0000-00' },
-      { role: '아버지', name: '김철수', bank: '○○은행', number: '000-0000-0000-00' },
-      { role: '어머니', name: '박영희', bank: '○○은행', number: '000-0000-0000-00' },
+      { role: '신랑', name: '최동환', bank: '국민은행', number: '93879176436' },
+      { role: '아버지', name: '최영락', bank: '우리은행', number: '1002-544-000283' },
+      { role: '어머니', name: '김재희', bank: '신한은행', number: '110-406-227293' },
     ],
     bride: [
-      { role: '신부', name: '김해리', bank: '○○은행', number: '000-0000-0000-00' },
-      { role: '아버지', name: '이영호', bank: '○○은행', number: '000-0000-0000-00' },
-      { role: '어머니', name: '최미경', bank: '○○은행', number: '000-0000-0000-00' },
+      { role: '신부', name: '김해리', bank: '기업은행', number: '381-122608-01-016' },
+      { role: '아버지', name: '김창곤', bank: '카카오뱅크', number: '3333-32-1246261' },
+      { role: '어머니', name: '김현옥', bank: '기업은행', number: '409-099436-01-028' },
     ],
   },
+
+  /** 마음 전하실 곳 아래 안내 문구 (비워두면 숨김) */
+  wreathNotice: ['화환은 정중히 사양합니다.', '축하해 주시는 마음만 감사히 받겠습니다.'],
 
   /** 갤러리에 처음 보여줄 사진 수 (나머지는 '더보기') */
   galleryInitialCount: 9,
