@@ -25,9 +25,24 @@ const links = [
     </p>
   </div>
 
-  <div class="map reveal" id="naver-map" data-key={config.naverMapKeyId}>
-    <p class="map-fallback">지도는 아래 버튼으로 확인해 주세요</p>
-  </div>
+  {
+    config.naverMapKeyId ? (
+      <div class="map reveal" id="naver-map" data-key={config.naverMapKeyId}>
+        <p class="map-fallback">지도는 아래 버튼으로 확인해 주세요</p>
+      </div>
+    ) : (
+      <a class="map map--image reveal" href={parkingMap.src} target="_blank" rel="noopener" aria-label="약도 크게 보기">
+        <Image
+          src={parkingMap}
+          alt="더 베니르 주변 약도: 수인분당선 중앙역 2번 출구, 주차장 ①~⑤ 위치, 롯데하이마트 셔틀버스 승차장"
+          widths={[430, 860, 1490]}
+          sizes="(max-width: 430px) 100vw, 430px"
+          format="webp"
+        />
+        <span>탭하면 크게 볼 수 있어요</span>
+      </a>
+    )
+  }
 
   <div class="links reveal">
     {
@@ -59,16 +74,6 @@ const links = [
 
   <div class="parking reveal">
     <p class="parking-title">주차 안내</p>
-    <a class="parking-map" href={parkingMap.src} target="_blank" rel="noopener" aria-label="약도 크게 보기">
-      <Image
-        src={parkingMap}
-        alt="더 베니르 주변 약도: 중앙역 2번 출구, 주차장 ①~⑤ 위치, 셔틀버스 승차장"
-        widths={[430, 860, 1264]}
-        sizes="(max-width: 430px) 90vw, 380px"
-        format="webp"
-      />
-      <span>탭하면 크게 볼 수 있어요</span>
-    </a>
     <ul class="lots">
       {
         parking.lots.map((l) => (
@@ -177,22 +182,6 @@ const links = [
     font-size: 14px;
     font-weight: 600;
     color: var(--rose-deep);
-  }
-
-  .parking-map {
-    display: block;
-    overflow: hidden;
-    border: 1px solid var(--line-strong);
-    border-radius: 10px;
-    background: #fff;
-  }
-
-  .parking-map span {
-    display: block;
-    padding: 6px 0 8px;
-    font-size: 11.5px;
-    text-align: center;
-    color: var(--muted);
   }
 
   .lots {
@@ -321,6 +310,25 @@ const links = [
     height: 260px;
     margin: 28px -28px 0;
     background: var(--rose-soft);
+  }
+
+  .map--image {
+    display: block;
+    height: auto;
+    padding: 18px 12px 10px;
+    background: #fff;
+  }
+
+  .map--image img {
+    width: 100%;
+  }
+
+  .map--image span {
+    display: block;
+    margin-top: 6px;
+    font-size: 11.5px;
+    text-align: center;
+    color: #888;
   }
 
   .map-fallback {
