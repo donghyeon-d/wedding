@@ -1,5 +1,5 @@
 # 청첩장 BGM 합성: 사장조 80BPM, 피아노 아르페지오 + 오르골 멜로디 + 패드 + 베이스
-# 사용: python3 tools/make_bgm.py /tmp/bgm.wav && afconvert -f m4af -d aac -b 128000 -q 127 /tmp/bgm.wav web/public/bgm.m4a
+# 사용: python3 tools/make_bgm.py /tmp/bgm.wav && afconvert -f m4af -d aac -b 128000 -q 127 /tmp/bgm.wav web/public/bgm/calm.m4a
 # 버퍼 길이로 감싸서(원형) 렌더링하므로 끝 → 처음이 끊김 없이 반복된다.
 import sys
 import numpy as np

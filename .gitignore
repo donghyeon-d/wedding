@@ -5,3 +5,4 @@ api/data
 photo/
 CLAUDE.md
 photo_v2/
+__pycache__/
