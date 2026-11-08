@@ -1,0 +1,9 @@
+# Cloudflare 정적 자산 헤더 (Caddy 설정과 같은 내용)
+/*
+  X-Robots-Tag: noindex, nofollow
+
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/wedding.ics
+  Content-Type: text/calendar; charset=utf-8

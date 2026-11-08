@@ -18,6 +18,7 @@ import { config } from '../config';
   const btn = document.querySelector<HTMLButtonElement>('[data-bgm-toggle]');
 
   if (audio && btn) {
+    audio.volume = 0.6; // 너무 크지 않게 (iOS는 볼륨 지정을 무시하고 기기 음량을 따름)
     btn.addEventListener('click', async () => {
       if (audio.paused) {
         await audio.play().catch(() => {});

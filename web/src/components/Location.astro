@@ -1,16 +1,19 @@
 ---
-import { Image } from 'astro:assets';
-import { config } from '../config';
-import boothSample from '../assets/photobooth.jpg';
-import SectionTitle from './SectionTitle.astro';
+import { Image } from "astro:assets";
+import { config } from "../config";
+import boothSample from "../assets/photobooth.jpg";
+import SectionTitle from "./SectionTitle.astro";
 
 const { venue, transport } = config;
 const name = encodeURIComponent(venue.name);
 
 const links = [
-  { label: '네이버지도', href: venue.naverMapUrl },
-  { label: '카카오맵', href: venue.kakaoMapUrl },
-  { label: '티맵', href: `tmap://route?goalname=${name}&goalx=${venue.lng}&goaly=${venue.lat}` },
+  { label: "네이버지도", href: venue.naverMapUrl },
+  { label: "카카오맵", href: venue.kakaoMapUrl },
+  {
+    label: "티맵",
+    href: `tmap://route?goalname=${name}&goalx=${venue.lng}&goaly=${venue.lat}`,
+  },
 ];
 ---
 
@@ -37,7 +40,9 @@ const links = [
         </a>
       ))
     }
-    <button type="button" class="btn btn--small" data-copy-address>주소 복사</button>
+    <button type="button" class="btn btn--small" data-copy-address
+      >주소 복사</button
+    >
   </div>
 
   <dl class="transport reveal">
@@ -72,8 +77,8 @@ const links = [
             <circle cx="12" cy="13.5" r="3.3" />
           </svg>
           <p class="booth-title">PHOTO BOOTH</p>
-          <p set:html={config.photoBooth.join('<br />')} />
-          <p class="booth-caption">이런 네 컷 사진을 찍어 가실 수 있어요</p>
+          <p set:html={config.photoBooth.join("<br />")} />
+          <p class="booth-caption">네 컷 사진을 찍어 가실 수 있어요</p>
         </div>
       </div>
     )
@@ -81,15 +86,17 @@ const links = [
 </section>
 
 <script>
-  import { config } from '../config';
-  import { copyText } from '../lib/ui';
+  import { config } from "../config";
+  import { copyText } from "../lib/ui";
 
   document
-    .querySelector('[data-copy-address]')
-    ?.addEventListener('click', () => copyText(config.venue.address, '주소가 복사되었습니다'));
+    .querySelector("[data-copy-address]")
+    ?.addEventListener("click", () =>
+      copyText(config.venue.address, "주소가 복사되었습니다"),
+    );
 
   declare const naver: any;
-  const mapEl = document.getElementById('naver-map');
+  const mapEl = document.getElementById("naver-map");
   const key = mapEl?.dataset.key;
 
   if (mapEl && key) {
@@ -98,12 +105,12 @@ const links = [
       (entries) => {
         if (!entries[0].isIntersecting) return;
         io.disconnect();
-        const s = document.createElement('script');
+        const s = document.createElement("script");
         s.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${encodeURIComponent(key)}`;
         s.onload = () => {
           const { lat, lng, name } = config.venue;
           const position = new naver.maps.LatLng(lat, lng);
-          mapEl.innerHTML = '';
+          mapEl.innerHTML = "";
           const map = new naver.maps.Map(mapEl, {
             center: position,
             zoom: 16,
@@ -112,7 +119,10 @@ const links = [
             pinchZoom: false,
             scrollWheel: false,
             zoomControl: true,
-            zoomControlOptions: { position: naver.maps.Position.TOP_RIGHT, style: naver.maps.ZoomControlStyle.SMALL },
+            zoomControlOptions: {
+              position: naver.maps.Position.TOP_RIGHT,
+              style: naver.maps.ZoomControlStyle.SMALL,
+            },
           });
           const marker = new naver.maps.Marker({ position, map });
           new naver.maps.InfoWindow({
@@ -123,7 +133,7 @@ const links = [
         };
         document.head.appendChild(s);
       },
-      { rootMargin: '400px' },
+      { rootMargin: "400px" },
     );
     io.observe(mapEl);
   }

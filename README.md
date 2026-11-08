@@ -26,10 +26,10 @@ wedding/
 
 ## 2. 외부 키 발급
 
-| 항목 | 발급처 | 설정 위치 |
-|---|---|---|
-| 네이버 지도 | [네이버 클라우드 플랫폼](https://console.ncloud.com) → Application Services → Maps → Application 등록 (Dynamic Map 선택, Web 서비스 URL에 도메인 등록) | `config.naverMapKeyId` (Client ID) |
-| 카카오톡 공유 | [카카오 디벨로퍼스](https://developers.kakao.com) → 애플리케이션 추가 → 플랫폼 → Web 사이트 도메인 등록 | `config.share.kakaoJsKey` (JavaScript 키) |
+| 항목          | 발급처                                                                                                                                                 | 설정 위치                                 |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------- |
+| 네이버 지도   | [네이버 클라우드 플랫폼](https://console.ncloud.com) → Application Services → Maps → Application 등록 (Dynamic Map 선택, Web 서비스 URL에 도메인 등록) | `config.naverMapKeyId` (Client ID)        |
+| 카카오톡 공유 | [카카오 디벨로퍼스](https://developers.kakao.com) → 애플리케이션 추가 → 플랫폼 → Web 사이트 도메인 등록                                                | `config.share.kakaoJsKey` (JavaScript 키) |
 
 키를 비워두면 지도 자리에는 안내 문구가 나오고, 카카오 공유 버튼은 숨겨집니다.
 
@@ -67,6 +67,7 @@ docker compose logs -f web    # 인증서 발급 로그 확인
 ```
 
 **사전 조건**
+
 - 도메인 DNS의 A 레코드가 집 공인 IP를 가리켜야 합니다.
 - 공유기에서 80, 443 포트를 서버로 포트포워딩해야 합니다.
 - 두 조건이 맞으면 Caddy가 Let's Encrypt 인증서를 자동으로 발급하고 갱신합니다.

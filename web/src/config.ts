@@ -89,5 +89,5 @@ export const config = {
   naverMapKeyId: '',
 
   /** 배경음악 파일 경로 (예: '/bgm.mp3' 를 public/ 에 넣기). 비워두면 버튼 숨김 */
-  bgm: '',
+  bgm: '/bgm.m4a',
 };

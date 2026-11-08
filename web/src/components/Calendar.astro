@@ -2,7 +2,7 @@
 import { config } from '../config';
 import { dateKo, monthGrid, timeKo, wedding } from '../lib/date';
 import SectionTitle from './SectionTitle.astro';
-import { googleCalendarUrl } from '../lib/calendar';
+import { androidCalendarIntent, googleCalendarUrl } from '../lib/calendar';
 
 const weeks = monthGrid();
 const names = `${config.groom.firstName} ♥ ${config.bride.firstName}`;
@@ -51,7 +51,7 @@ const names = `${config.groom.firstName} ♥ ${config.bride.firstName}`;
   </ol>
 
   <div class="add-cal reveal">
-    <a class="btn btn--small" href="/wedding.ics" download="wedding.ics">
+    <a class="btn btn--small" href="/wedding.ics" data-add-cal data-android={androidCalendarIntent()}>
       <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5.5" width="16" height="14" rx="2" /><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4M12 12.5v5M9.5 15h5" /></svg>
       캘린더에 추가
     </a>
@@ -76,6 +76,12 @@ const names = `${config.groom.firstName} ♥ ${config.bride.firstName}`;
   }
 
   // 예식 시각까지 남은 일·시·분·초 (예식 시각이 지나면 숨김)
+  // 캘린더에 추가: 안드로이드는 .ics 파일을 캘린더 앱이 열지 못하고, 구글 캘린더 웹 링크도 모바일에선
+  // 일정 추가 화면이 안 뜨는 경우가 많아 기기 캘린더 앱의 '일정 추가' intent를 연다.
+  // 아이폰 등은 .ics (text/calendar) 로 열면 기본 캘린더의 '추가' 화면이 뜬다.
+  const addCal = document.querySelector<HTMLAnchorElement>('[data-add-cal]');
+  if (addCal && /android/i.test(navigator.userAgent)) addCal.href = addCal.dataset.android!;
+
   const box = document.querySelector<HTMLElement>('[data-countdown]');
   if (box) {
     const target = Date.parse(config.date);
