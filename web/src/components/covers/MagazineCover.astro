@@ -44,7 +44,6 @@ const issue = `${String(wedding.month).padStart(2, '0')}${String(wedding.day).pa
 
   <div class="intro-bottom" aria-hidden="true">
     <span class="intro-names">{groom.firstName} <i>&amp;</i> {bride.firstName}</span>
-    <span class="counter"><b>01</b><b>02</b><b>03</b></span>
   </div>
 
   <div class="shade" aria-hidden="true"></div>
@@ -231,55 +230,6 @@ const issue = `${String(wedding.month).padStart(2, '0')}${String(wedding.day).pa
     }
     100% {
       opacity: 0;
-    }
-  }
-
-  .counter {
-    position: relative;
-    width: 2.4em;
-    font-size: 13px;
-    letter-spacing: 0.1em;
-    text-align: right;
-  }
-
-  .counter b {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    font-weight: 400;
-    opacity: 0;
-  }
-
-  .counter b:nth-child(1) {
-    animation: count 1.7s 0.2s both;
-  }
-
-  .counter b:nth-child(2) {
-    animation: count 1.7s 1.9s both;
-  }
-
-  .counter b:nth-child(3) {
-    animation: count-last 1.4s 3.6s both;
-  }
-
-  @keyframes count {
-    0%,
-    100% {
-      opacity: 0;
-    }
-    15%,
-    85% {
-      opacity: 1;
-    }
-  }
-
-  @keyframes count-last {
-    0% {
-      opacity: 0;
-    }
-    20%,
-    100% {
-      opacity: 1;
     }
   }
 
