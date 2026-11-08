@@ -5,10 +5,11 @@ html[data-theme='magazine'] {
   --tint: #efece3;
   --ink: #2c2d27;
   --muted: #7c7a70;
-  --rose: #56653d;
-  --rose-deep: #3c4829;
-  --rose-soft: #e3e7d6;
-  --sage: #93a275;
+  /* 포인트: 커버 글자색(--cover-accent #f5e9be)과 같은 계열의 골드 (밝은 바탕에서도 읽히도록 짙게) */
+  --rose: #b0903f;
+  --rose-deep: #86692a;
+  --rose-soft: #f4ecd4;
+  --sage: #d2bd82;
   --gold: #e0cd8e;
   --line: #e6e2d7;
   --line-strong: #d2cdbd;
