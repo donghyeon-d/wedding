@@ -6,7 +6,7 @@
 
 export const config = {
   /** 실제 서비스 주소 (카카오 공유·미리보기에 사용) */
-  siteUrl: 'https://wedding.example.com',
+  siteUrl: 'https://wedding.dongchoi.com',
 
   groom: {
     lastName: '최',
@@ -68,6 +68,9 @@ export const config = {
       { role: '어머니', name: '김현옥', bank: '기업은행', number: '409-099436-01-028' },
     ],
   },
+
+  /** 오시는 길 아래 안내 박스 (비워두면 숨김) */
+  photoBooth: ['포토부스를 마련했습니다.', '사진 한 장 남기고 가시면 좋겠습니다.'],
 
   /** 마음 전하실 곳 아래 안내 문구 (비워두면 숨김) */
   wreathNotice: ['화환은 정중히 사양합니다.', '축하해 주시는 마음만 감사히 받겠습니다.'],

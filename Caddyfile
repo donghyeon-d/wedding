@@ -11,6 +11,8 @@
 	handle {
 		root * /srv
 		header /_astro/* Cache-Control "public, max-age=31536000, immutable"
+		# 캘린더에 추가하기 (iOS는 이 타입이어야 다운로드 대신 캘린더 추가 화면이 뜸)
+		header /wedding.ics Content-Type "text/calendar; charset=utf-8"
 		file_server
 	}
 }

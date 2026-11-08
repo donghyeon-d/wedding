@@ -1,0 +1,65 @@
+/* 디자인 11 · 블랙 & 화이트 + 마젠타 핑크 포인트 (4번 매거진 기반) */
+html[data-theme='mono'] {
+  --bg: #e8e8e8;
+  --paper: #ffffff;
+  --tint: #f4f4f4;
+  --ink: #141414;
+  --muted: #777777;
+  --rose: #e0157f;
+  --rose-deep: #b80d66;
+  --rose-soft: #fde4f0;
+  --sage: #9a9a9a;
+  --gold: #e0157f;
+  --line: #e7e7e7;
+  --line-strong: #cfcfcf;
+  --card: #ffffff;
+  --petal-from: #ffd3e8;
+  --petal-to: #e0157f;
+  --serif: 'Gowun Batang', serif;
+  --display: 'Bodoni Moda', 'Gowun Batang', serif;
+
+  /* 커버 */
+  --cover-bg: #000;
+  --cover-shade: 0, 0, 0;
+  --cover-ink: #ffffff;
+  --cover-headline: #ffffff;
+  --cover-accent: #ff2e93;
+  --cover-pill: #ff2e93;
+}
+
+html[data-theme='mono'] .page {
+  box-shadow: 0 0 48px rgba(0, 0, 0, 0.12);
+}
+
+html[data-theme='mono'] .section-title .eyebrow {
+  font-family: var(--display);
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.34em;
+}
+
+html[data-theme='mono'] .section-title h2 {
+  font-size: 22px;
+}
+
+/* 버튼은 흑백, 주요 버튼만 마젠타 */
+html[data-theme='mono'] .btn {
+  border-radius: 0;
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+html[data-theme='mono'] .btn--primary {
+  border-color: var(--rose);
+  color: #fff;
+}
+
+/* 섹션 제목 아래 짧은 마젠타 줄 */
+html[data-theme='mono'] .section-title h2::after {
+  content: '';
+  display: block;
+  width: 22px;
+  height: 2px;
+  margin: 14px auto 0;
+  background: var(--rose);
+}

@@ -2,6 +2,7 @@
 import { config } from '../config';
 import { dateKo, monthGrid, timeKo, wedding } from '../lib/date';
 import SectionTitle from './SectionTitle.astro';
+import { googleCalendarUrl } from '../lib/calendar';
 
 const weeks = monthGrid();
 const names = `${config.groom.firstName} ♥ ${config.bride.firstName}`;
@@ -32,6 +33,30 @@ const names = `${config.groom.firstName} ♥ ${config.bride.firstName}`;
   </table>
 
   <p class="dday reveal" data-dday data-names={names}></p>
+
+  <ol class="countdown reveal" data-countdown hidden>
+    {
+      [
+        ['d', '일'],
+        ['h', '시간'],
+        ['m', '분'],
+        ['s', '초'],
+      ].map(([k, label]) => (
+        <li>
+          <b data-unit={k}>00</b>
+          <span>{label}</span>
+        </li>
+      ))
+    }
+  </ol>
+
+  <div class="add-cal reveal">
+    <a class="btn btn--small" href="/wedding.ics" download="wedding.ics">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5.5" width="16" height="14" rx="2" /><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4M12 12.5v5M9.5 15h5" /></svg>
+      캘린더에 추가
+    </a>
+    <a class="btn btn--small" href={googleCalendarUrl()} target="_blank" rel="noopener">구글 캘린더</a>
+  </div>
 </section>
 
 <script>
@@ -48,6 +73,31 @@ const names = `${config.groom.firstName} ♥ ${config.bride.firstName}`;
     if (diff > 0) el.innerHTML = `${names}의 결혼식이 <strong>${diff}일</strong> 남았습니다`;
     else if (diff === 0) el.innerHTML = `오늘은 <strong>${names}</strong>의 결혼식날입니다`;
     else el.innerHTML = `${names}의 결혼식이 <strong>${-diff}일</strong> 지났습니다`;
+  }
+
+  // 예식 시각까지 남은 일·시·분·초 (예식 시각이 지나면 숨김)
+  const box = document.querySelector<HTMLElement>('[data-countdown]');
+  if (box) {
+    const target = Date.parse(config.date);
+    const units = Object.fromEntries(
+      [...box.querySelectorAll<HTMLElement>('[data-unit]')].map((u) => [u.dataset.unit!, u]),
+    );
+    const pad = (n: number) => String(n).padStart(2, '0');
+    const tick = () => {
+      const left = Math.max(0, Math.floor((target - Date.now()) / 1000));
+      if (!left) {
+        box.hidden = true;
+        clearInterval(timer);
+        return;
+      }
+      box.hidden = false;
+      units.d.textContent = String(Math.floor(left / 86400));
+      units.h.textContent = pad(Math.floor(left / 3600) % 24);
+      units.m.textContent = pad(Math.floor(left / 60) % 60);
+      units.s.textContent = pad(left % 60);
+    };
+    const timer = setInterval(tick, 1000);
+    tick();
   }
 </script>
 
@@ -99,6 +149,63 @@ const names = `${config.groom.firstName} ♥ ${config.bride.firstName}`;
   .dday {
     margin-top: 28px;
     font-size: 14.5px;
+  }
+
+  .countdown {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 18px;
+    list-style: none;
+  }
+
+  .countdown[hidden] {
+    display: none;
+  }
+
+  .countdown li {
+    display: grid;
+    gap: 2px;
+    min-width: 62px;
+    padding: 10px 4px 8px;
+    border: 1px solid var(--line-strong);
+    border-radius: 10px;
+    background: var(--card);
+  }
+
+  .countdown b {
+    font-size: 22px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--rose-deep);
+  }
+
+  .countdown span {
+    font-size: 11.5px;
+    color: var(--muted);
+  }
+
+  .add-cal {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 22px;
+  }
+
+  .add-cal a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+  }
+
+  .add-cal svg {
+    width: 15px;
+    height: 15px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
   }
 
   .dday :global(strong) {
