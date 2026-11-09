@@ -5,7 +5,7 @@ import { config } from '../config';
 {
   config.bgm && (
     <>
-      <audio src={config.bgm} loop preload="none" data-bgm />
+      <audio src={config.bgm} loop preload="auto" data-bgm />
       <button type="button" class="bgm" data-bgm-toggle aria-label="배경음악 켜기" aria-pressed="false">
         ♪
       </button>
@@ -14,20 +14,48 @@ import { config } from '../config';
 }
 
 <script>
+  // 배경음악 기본 켜짐.
+  // 브라우저(iOS 사파리·크롬·카카오톡 인앱)는 소리 있는 자동재생을 막으므로
+  // 1) 열자마자 재생을 시도하고, 2) 막히면 화면을 처음 터치·클릭하는 순간 재생한다.
+  // 하객이 ♪ 버튼으로 끄면 그 뒤로는 자동으로 다시 켜지 않는다.
   const audio = document.querySelector<HTMLAudioElement>('[data-bgm]');
   const btn = document.querySelector<HTMLButtonElement>('[data-bgm-toggle]');
 
   if (audio && btn) {
     audio.volume = 0.6; // 너무 크지 않게 (iOS는 볼륨 지정을 무시하고 기기 음량을 따름)
-    btn.addEventListener('click', async () => {
-      if (audio.paused) {
-        await audio.play().catch(() => {});
-      } else {
-        audio.pause();
-      }
+    let wantOn = true;
+
+    const sync = () => {
       const on = !audio.paused;
       btn.setAttribute('aria-pressed', String(on));
       btn.setAttribute('aria-label', on ? '배경음악 끄기' : '배경음악 켜기');
+    };
+    audio.addEventListener('play', sync);
+    audio.addEventListener('pause', sync);
+
+    const unlockEvents = ['pointerdown', 'touchend', 'click', 'keydown'] as const;
+    const unlock = (e: Event) => {
+      // ♪ 버튼 자체를 누른 경우는 버튼 쪽에서 처리
+      if ((e.target as Element | null)?.closest?.('[data-bgm-toggle]')) return;
+      if (wantOn && audio.paused) audio.play().catch(() => {});
+      if (!audio.paused || !wantOn) stopUnlock();
+    };
+    const stopUnlock = () => unlockEvents.forEach((t) => document.removeEventListener(t, unlock, true));
+
+    audio
+      .play()
+      .then(stopUnlock)
+      .catch(() => unlockEvents.forEach((t) => document.addEventListener(t, unlock, { capture: true, passive: true })));
+
+    btn.addEventListener('click', () => {
+      if (audio.paused) {
+        wantOn = true;
+        audio.play().catch(() => {});
+      } else {
+        wantOn = false;
+        audio.pause();
+      }
+      stopUnlock();
     });
   }
 </script>
