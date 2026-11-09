@@ -4,6 +4,15 @@
 	# 검색엔진 노출 방지 (계좌번호·가족 이름 보호)
 	header X-Robots-Tag "noindex, nofollow"
 
+	# 예전 디자인 주소 → 새 주소 (301). 카카오 미리보기 수집기도 따라오도록 서버에서 바로 이동
+	# /4 는 최종 디자인인 / 로, 나머지 /<번호> 는 /list/<번호>/ 로
+	@olddesign path_regexp old ^/([0-9]+)/?$
+	route {
+		redir /4 / 301
+		redir /4/ / 301
+		redir @olddesign /list/{re.old.1}/ 301
+	}
+
 	handle /api/* {
 		reverse_proxy api:3000
 	}

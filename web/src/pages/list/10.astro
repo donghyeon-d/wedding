@@ -1,0 +1,9 @@
+---
+import Invitation from '../../layouts/Invitation.astro';
+import Cover from '../../components/covers/HanjiCover.astro';
+import '../../styles/themes/hanji.css';
+---
+
+<Invitation theme="hanji" fonts={['Nanum+Myeongjo:wght@400;700', 'Song+Myung']} themeColor="#f5efe3">
+  <Cover slot="cover" />
+</Invitation>
