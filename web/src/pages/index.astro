@@ -36,6 +36,8 @@ const tracks = [
 ];
 
 const { groom, bride } = config;
+const { share, siteUrl } = config;
+const ogImage = new URL('/og.jpg', siteUrl).href;
 ---
 
 <!doctype html>
@@ -46,6 +48,15 @@ const { groom, bride } = config;
     <title>청첩장 디자인 고르기 · {groom.firstName} ♥ {bride.firstName}</title>
     <meta name="robots" content="noindex, nofollow" />
     <meta name="theme-color" content="#fffcf8" />
+    <meta name="description" content={share.description} />
+    <!-- 이 주소를 카톡으로 보내도 청첩장 미리보기가 뜨도록 -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={new URL('/', siteUrl).href} />
+    <meta property="og:title" content={share.title} />
+    <meta property="og:description" content={share.description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
