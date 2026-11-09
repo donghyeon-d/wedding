@@ -22,7 +22,7 @@ interface Props {
 const { theme = 'default', fonts = [], themeColor = '#fffcf8' } = Astro.props;
 
 const { share, siteUrl } = config;
-const ogImage = new URL('/og.jpg', siteUrl).href;
+const ogImage = new URL(share.ogImage, siteUrl).href;
 // 공유한 페이지 자신의 주소 (카카오가 다른 주소를 다시 읽어 가지 않도록)
 const pageUrl = new URL(Astro.url.pathname, siteUrl).href;
 const fontFamilies = ['Gowun+Batang', ...fonts].map((f) => `family=${f}`).join('&');

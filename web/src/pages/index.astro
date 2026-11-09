@@ -37,7 +37,7 @@ const tracks = [
 
 const { groom, bride } = config;
 const { share, siteUrl } = config;
-const ogImage = new URL('/og.jpg', siteUrl).href;
+const ogImage = new URL(share.ogImage, siteUrl).href;
 ---
 
 <!doctype html>

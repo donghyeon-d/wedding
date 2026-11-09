@@ -8,7 +8,7 @@ wedding/
 │  ├─ src/config.ts         # ★ 이름·날짜·장소·계좌·인사말 등 모든 문구
 │  ├─ src/assets/cover.jpg  # ★ 메인 사진
 │  ├─ src/assets/gallery/   # ★ 갤러리 사진 (파일명 순 정렬, 자동 WebP 변환)
-│  └─ public/og.jpg         # ★ 카카오톡 미리보기 이미지 (1200×630)
+│  └─ public/og-*.jpg       # ★ 카카오톡 미리보기 이미지 (1200×630, 경로는 config.share.ogImage)
 ├─ api/server.mjs           # 방명록 API (의존성 없음)
 ├─ Caddyfile                # HTTPS + /api 프록시
 ├─ docker-compose.yml
@@ -21,7 +21,7 @@ wedding/
 2. 사진을 교체합니다. 지금 들어 있는 사진은 모두 임시 이미지입니다.
    - `web/src/assets/cover.jpg`: 세로 사진 권장 (3:4 비율로 잘림)
    - `web/src/assets/gallery/`: 기존 파일을 지우고 `01.jpg`, `02.jpg` … 순서로 넣기 (원본 크기 그대로 넣어도 빌드할 때 자동으로 줄임)
-   - `web/public/og.jpg`: 1200×630
+   - `web/public/og-*.jpg`: 1200×630 (바꿀 땐 파일 이름도 새로 하고 `config.share.ogImage` 수정 — 카카오톡 캐시 때문)
 3. 배경음악을 쓰려면 `web/public/bgm.mp3`를 넣고 `config.bgm = '/bgm.mp3'`로 설정합니다.
 
 ## 2. 외부 키 발급

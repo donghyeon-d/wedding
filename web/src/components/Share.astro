@@ -54,7 +54,7 @@ const { groom, bride, share } = config;
         content: {
           title: config.share.title,
           description: config.share.description,
-          imageUrl: new URL('/og.jpg', url).href,
+          imageUrl: new URL(config.share.ogImage, url).href,
           imageWidth: 1200,
           imageHeight: 630,
           link,
