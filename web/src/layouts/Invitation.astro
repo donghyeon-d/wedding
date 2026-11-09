@@ -9,6 +9,7 @@ import Gallery from '../components/Gallery.astro';
 import Greeting from '../components/Greeting.astro';
 import Guestbook from '../components/Guestbook.astro';
 import Location from '../components/Location.astro';
+import PhotoBooth from '../components/PhotoBooth.astro';
 import Share from '../components/Share.astro';
 
 interface Props {
@@ -61,6 +62,7 @@ const fontFamilies = ['Gowun+Batang', ...fonts].map((f) => `family=${f}`).join('
       <Calendar />
       <Gallery />
       <Location />
+      <PhotoBooth />
       <Accounts />
       <Guestbook />
       <Share />
