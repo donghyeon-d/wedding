@@ -93,9 +93,9 @@ const issue = `${String(wedding.month).padStart(2, '0')}${String(wedding.day).pa
 <style>
   /* 타임라인 (초)
      0.2  1번 컷 등장 · 위/아래 인트로 문구
-     1.9  2번 컷
-     3.6  3번 컷
-     5.0  인트로 문구 퇴장, 프레임이 화면 가득 펼쳐짐 (1.5s)
+     1.1  2번 컷
+     2.0  3번 컷
+     2.9  인트로 문구 퇴장, 프레임이 화면 가득 펼쳐짐 (1.2s)
      6.2~ 그림자 · 헤더 · 헤드라인 · 날짜 순서대로 */
   .cover {
     --frame-inset: calc(50% - 33.333cqw);
@@ -133,7 +133,7 @@ const issue = `${String(wedding.month).padStart(2, '0')}${String(wedding.day).pa
     position: absolute;
     inset: 0;
     overflow: hidden;
-    animation: expand 1.5s cubic-bezier(0.7, 0, 0.2, 1) 5s both;
+    animation: expand 1.2s cubic-bezier(0.7, 0, 0.2, 1) 2.9s both;
   }
 
   @keyframes expand {
@@ -156,17 +156,17 @@ const issue = `${String(wedding.month).padStart(2, '0')}${String(wedding.day).pa
   }
 
   .shot--1 {
-    animation: shot-in 0.9s ease-out 0.2s both;
+    animation: shot-in 0.6s ease-out 0.2s both;
   }
 
   .shot--2 {
-    animation: shot-in 0.7s ease-out 1.9s both;
+    animation: shot-in 0.45s ease-out 1.1s both;
   }
 
   .shot--3 {
     animation:
-      shot-in 0.7s ease-out 3.6s both,
-      drift 16s ease-out 6.5s both;
+      shot-in 0.45s ease-out 2s both,
+      drift 16s ease-out 4s both;
   }
 
   @keyframes shot-in {
@@ -190,7 +190,7 @@ const issue = `${String(wedding.month).padStart(2, '0')}${String(wedding.day).pa
     opacity: 0;
     font-family: var(--display);
     color: var(--cover-accent);
-    animation: intro-text 4.8s ease 0.4s both;
+    animation: intro-text 2.8s ease 0.3s both;
   }
 
   .intro-top {
@@ -241,7 +241,7 @@ const issue = `${String(wedding.month).padStart(2, '0')}${String(wedding.day).pa
       linear-gradient(180deg, rgba(var(--cover-shade, 14, 17, 9), 0.6) 0%, rgba(var(--cover-shade, 14, 17, 9), 0) 26%),
       linear-gradient(90deg, rgba(var(--cover-shade, 14, 17, 9), 0.45) 0%, rgba(var(--cover-shade, 14, 17, 9), 0) 45%),
       linear-gradient(0deg, rgba(var(--cover-shade, 14, 17, 9), 0.8) 0%, rgba(var(--cover-shade, 14, 17, 9), 0.2) 40%, rgba(var(--cover-shade, 14, 17, 9), 0) 58%);
-    animation: fade 1.2s ease 6.1s both;
+    animation: fade 1s ease 3.7s both;
   }
 
   @keyframes fade {
@@ -268,7 +268,7 @@ const issue = `${String(wedding.month).padStart(2, '0')}${String(wedding.day).pa
     font-size: 14px;
     font-weight: 600;
     letter-spacing: 0.04em;
-    animation: fade 1s ease 6.4s both;
+    animation: fade 0.9s ease 3.9s both;
   }
 
   .pill {
@@ -290,7 +290,7 @@ const issue = `${String(wedding.month).padStart(2, '0')}${String(wedding.day).pa
     font-size: 10.5px;
     letter-spacing: 0.32em;
     opacity: 0.8;
-    animation: fade 1s ease 6.6s both;
+    animation: fade 0.9s ease 4.05s both;
   }
 
   .issue i {
@@ -309,7 +309,7 @@ const issue = `${String(wedding.month).padStart(2, '0')}${String(wedding.day).pa
     font-size: 10.5px;
     letter-spacing: 0.4em;
     opacity: 0.7;
-    animation: fade 1.2s ease 7s both;
+    animation: fade 1s ease 4.3s both;
   }
 
   .lines {
@@ -327,11 +327,11 @@ const issue = `${String(wedding.month).padStart(2, '0')}${String(wedding.day).pa
 
   .lines li {
     max-width: 9.5em;
-    animation: rise 0.9s ease 7s both;
+    animation: rise 0.8s ease 4.3s both;
   }
 
   .lines li + li {
-    animation-delay: 7.2s;
+    animation-delay: 4.45s;
   }
 
   .lines small {
@@ -367,13 +367,13 @@ const issue = `${String(wedding.month).padStart(2, '0')}${String(wedding.day).pa
   .headline span[aria-hidden] {
     font-size: 40px;
     color: var(--cover-headline, var(--cover-accent));
-    animation: rise 1s ease 6.5s both;
+    animation: rise 0.9s ease 3.9s both;
   }
 
   .headline em {
     font-size: 64px;
     font-style: italic;
-    animation: rise 1.1s ease 6.75s both;
+    animation: rise 1s ease 4.05s both;
   }
 
   .bottom {
@@ -382,7 +382,7 @@ const issue = `${String(wedding.month).padStart(2, '0')}${String(wedding.day).pa
     right: 0;
     bottom: calc(40px + env(safe-area-inset-bottom));
     text-align: center;
-    animation: rise 1s ease 7.1s both;
+    animation: rise 0.9s ease 4.3s both;
   }
 
   .when {
@@ -412,7 +412,7 @@ const issue = `${String(wedding.month).padStart(2, '0')}${String(wedding.day).pa
     letter-spacing: 0.24em;
     color: var(--cover-ink);
     opacity: 0;
-    animation: intro-text 4.6s ease 0.8s both;
+    animation: intro-text 2.5s ease 0.5s both;
   }
 
   html:not(.js) .hint {
