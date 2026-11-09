@@ -49,9 +49,7 @@ const issue = `${String(wedding.month).padStart(2, '0')}${String(wedding.day).pa
   <div class="shade" aria-hidden="true"></div>
 
   <header class="top">
-    <span>{groom.lastName}{groom.firstName}</span>
     <span class="pill">INVITATION</span>
-    <span>{bride.lastName}{bride.firstName}</span>
   </header>
   <p class="issue" aria-hidden="true">VOL. {issue} <i>—</i> SPECIAL EDITION</p>
 
@@ -59,7 +57,7 @@ const issue = `${String(wedding.month).padStart(2, '0')}${String(wedding.day).pa
 
   <ul class="lines" aria-hidden="true">
     <li><small>Cover Story</small>Donghwan <i>&amp;</i> Haeri</li>
-    <li><small>Chapter 01</small>Walking toward each other</li>
+    <li><small>Chapter 01</small>Walking toward<br />each other</li>
   </ul>
 
   <h1 class="headline">
@@ -264,7 +262,7 @@ const issue = `${String(wedding.month).padStart(2, '0')}${String(wedding.day).pa
     right: 20px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     font-size: 14px;
     font-weight: 600;
     letter-spacing: 0.04em;
