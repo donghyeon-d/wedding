@@ -2,7 +2,7 @@
 import { config } from '../config';
 import { dateKo, monthGrid, timeKo, wedding } from '../lib/date';
 import SectionTitle from './SectionTitle.astro';
-import { androidCalendarIntent, googleCalendarUrl } from '../lib/calendar';
+import { androidCalendarIntent } from '../lib/calendar';
 
 const weeks = monthGrid();
 const names = `${config.groom.firstName} ♥ ${config.bride.firstName}`;
@@ -55,7 +55,6 @@ const names = `${config.groom.firstName} ♥ ${config.bride.firstName}`;
       <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5.5" width="16" height="14" rx="2" /><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4M12 12.5v5M9.5 15h5" /></svg>
       캘린더에 추가
     </a>
-    <a class="btn btn--small" href={googleCalendarUrl()} target="_blank" rel="noopener">구글 캘린더</a>
   </div>
 </section>
 
