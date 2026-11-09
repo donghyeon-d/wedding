@@ -55,6 +55,8 @@ const { groom, bride, share } = config;
           title: config.share.title,
           description: config.share.description,
           imageUrl: new URL('/og.jpg', url).href,
+          imageWidth: 1200,
+          imageHeight: 630,
           link,
         },
         buttons: [{ title: '청첩장 보기', link }],
