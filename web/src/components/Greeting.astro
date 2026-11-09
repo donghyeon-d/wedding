@@ -47,16 +47,25 @@ const paragraphs = greeting.body
     margin: 44px 0;
   }
 
+  /* 두 줄을 2열 표처럼: 부모님·관계는 왼쪽 정렬, 이름은 오른쪽 정렬 → 두 줄의 가로 폭이 같아짐 */
   .parents {
     display: grid;
-    gap: 10px;
+    grid-template-columns: auto auto;
+    justify-content: center;
+    align-items: baseline;
+    gap: 10px 14px;
   }
 
   .parents div {
-    display: flex;
-    justify-content: center;
-    align-items: baseline;
-    gap: 10px;
+    display: contents;
+  }
+
+  dt {
+    text-align: left;
+  }
+
+  dd {
+    text-align: right;
   }
 
   dt {

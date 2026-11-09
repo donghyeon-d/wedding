@@ -60,7 +60,11 @@ const links = [
     {
       transport.map((t) => (
         <div>
-          <dt>{t.label}</dt>
+          <dt aria-label={t.label}>
+            {[...t.label].map((ch) => (
+              <span aria-hidden="true">{ch}</span>
+            ))}
+          </dt>
           <dd>
             {t.lines.map((line) => (
               <p>{line}</p>
@@ -162,10 +166,11 @@ const links = [
 
   .lots {
     display: grid;
-    gap: 10px;
-    margin-top: 16px;
+    gap: 6px;
+    margin-top: 12px;
     list-style: none;
     font-size: 14px;
+    line-height: 1.45;
   }
 
   .lots li {
@@ -192,8 +197,12 @@ const links = [
     background: var(--card);
     list-style: none;
     font-size: 13px;
-    line-height: 1.7;
+    line-height: 1.5;
     color: var(--muted);
+  }
+
+  .notes li + li {
+    margin-top: 2px;
   }
 
   .notes li {
@@ -276,8 +285,8 @@ const links = [
 
   .transport div {
     display: grid;
-    grid-template-columns: 64px 1fr;
-    gap: 12px;
+    grid-template-columns: 4.2em 1fr;
+    gap: 18px;
     padding: 16px 4px;
     border-top: 1px solid var(--line-strong);
   }
@@ -286,7 +295,11 @@ const links = [
     border-bottom: 1px solid var(--line-strong);
   }
 
-  dt {
+  /* 항목 이름(지하철·셔틀버스·주차)을 같은 폭으로 양쪽 정렬: 글자를 칸 전체에 고르게 벌림 */
+  .transport dt {
+    display: flex;
+    justify-content: space-between;
+    align-self: start;
     font-family: var(--serif);
     color: var(--rose-deep);
   }
